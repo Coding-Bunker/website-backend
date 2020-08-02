@@ -1,12 +1,11 @@
 const morgan = require('morgan');
+const mysql = require('mysql');
 require('dotenv').config();
 var express = require('express');
 var app = express();
 
 app.use(express.json());
 app.use(morgan("dev"));
-
-const mysql = require('mysql');
 
 const connection = mysql.createConnection({
   host     : process.env.HOST,
