@@ -1,5 +1,7 @@
-import app from "./app"
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
+import app from "./app"
 
 const port = process.env.PORT || 8080;
 
