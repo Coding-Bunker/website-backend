@@ -3,9 +3,12 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 @Entity("user")
 export class User {
         @PrimaryGeneratedColumn()
-        id = number;
+        id = undefined;
 
-        @Column("varchar", {length: 50})
+        @Column("varchar", {
+                length: 50,
+                nullable: true
+        })
         email = "";
 
         @Column("varchar", {
