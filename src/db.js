@@ -1,7 +1,9 @@
 import { createConnection, getConnectionOptions } from "typeorm"
 import * as path from "path"
 import * as fs from "fs"
-import { User } from "./entity/user"
+import { Account } from "./entity/account"
+import { Post } from "./entity/post"
+import { Attachment } from "./entity/attachment"
 
 
 export const createDbConnection = async () => {

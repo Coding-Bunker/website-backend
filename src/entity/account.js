@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Post } from "./post";
 
-@Entity("user")
-export class User {
+@Entity("account")
+export class Account {
         @PrimaryGeneratedColumn()
         id = undefined;
 
@@ -28,4 +29,7 @@ export class User {
                 length: 24
         })
         surname = "";
+
+        @OneToMany(type => Post)
+        posts = undefined;
 }
