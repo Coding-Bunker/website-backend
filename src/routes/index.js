@@ -1,9 +1,15 @@
-import { Router } from "express"
-import Controllers from "../controllers"
+import { Router } from 'express'
 
-const router = Router();
+import Controllers from '../controllers'
 
-router.post('/newsletter', Controllers.newsletters);
+import authRoutes from './auth'
+import secureRoutes from './secure'
 
+const router = Router()
 
-export default router;
+router.use(authRoutes)
+router.use(secureRoutes)
+
+router.post('/newsletter', Controllers.newsletters)
+
+export default router
