@@ -1,5 +1,18 @@
-import { Router } from 'express'
+import { Router } from 'express';
 
-const router = Router()
+import Controllers from '../../controllers';
+import Middlewares from '../../middlewares';
 
-export default router
+const router = Router();
+
+// prettier-ignore
+router
+	.post('/login', Controllers.auth.login)
+	.post('/register', Controllers.auth.register)
+	.post('/logout', Controllers.auth.logout)
+
+// prettier-ignore
+router
+	.post('/refresh_token', Controllers.auth.refreshToken);
+
+export default router;

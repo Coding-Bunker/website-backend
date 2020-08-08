@@ -1,8 +1,9 @@
-import { Router } from 'express'
-import { MemoryStore } from 'express-brute'
+import { Router } from 'express';
 
-const router = Router()
+import Middlewares from '../../middlewares';
 
-router.use(MemoryStore()) // Prevents brute force attacks
+const router = Router();
 
-export default router
+router.use(Middlewares.auth.isAuth);
+
+export default router;

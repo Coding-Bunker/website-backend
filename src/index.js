@@ -1,14 +1,13 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
-require('dotenv').config()
+import 'dotenv-safe/config';
+import 'reflect-metadata';
 
-import 'reflect-metadata'
+import app from './app';
 
-import app from './app'
-
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
-	console.log(`Server listening at ${port} port`)
-})
+	console.log(`Server listening at ${port} port`);
+});

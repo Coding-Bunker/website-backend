@@ -1,35 +1,47 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
-import { Post } from "./post";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity } from 'typeorm';
+import { Post } from './post';
 
-@Entity("account")
-export class Account {
-        @PrimaryGeneratedColumn()
-        id = undefined;
+@Entity('account')
+export class Account extends BaseEntity {
+	@PrimaryGeneratedColumn()
+	id = undefined;
 
-        @Column("varchar", {
-                length: 50,
-                nullable: true
-        })
-        email = "";
+	@Column({
+		type: 'enum',
+		enum: ['admin', 'developer', 'moderator', 'donator', 'member'],
+		default: 'member',
+	})
+	role = 'member';
 
-        @Column("varchar", {
-                nullable: true,
-                length: 256
-        })
-        password = "";
+	@Column('varchar', {
+		length: 50,
+		nullable: true,
+	})
+	email = '';
 
-        @Column("varchar", {
-                nullable: true,
-                length: 24
-        })
-        name = "";
+	@Column('varchar', {
+		nullable: true,
+		length: 256,
+	})
+	password = '';
 
-        @Column("varchar", {
-                nullable: true,
-                length: 24
-        })
-        surname = "";
+	@Column('varchar', {
+		nullable: true,
+		length: 24,
+	})
+	name = '';
 
-        @OneToMany(type => Post)
-        posts = undefined;
+	@Column('varchar', {
+		nullable: true,
+		length: 24,
+	})
+	surname = '';
+
+	@Column('int', {
+		default: 0,
+	})
+	tokenVersion = 0;
+
+	@OneToMany(type => Post)
+	posts = undefined;
 }

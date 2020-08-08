@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 module.exports = {
 	name: 'default',
@@ -20,4 +20,4 @@ module.exports = {
 		migrationsDir: 'dist/migration',
 		subscribersDir: 'dist/subscriber',
 	},
-}
+};

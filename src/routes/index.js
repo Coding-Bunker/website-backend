@@ -1,15 +1,16 @@
-import { Router } from 'express'
+import { Router } from 'express';
 
-import Controllers from '../controllers'
+import Controllers from '../controllers';
 
-import authRoutes from './auth'
-import secureRoutes from './secure'
+import authRoutes from './auth';
+import secureRoutes from './secure';
 
-const router = Router()
+const router = Router();
 
-router.use(authRoutes)
-router.use(secureRoutes)
+router.use('/auth', authRoutes);
+router.use('/secure', secureRoutes);
 
-router.post('/newsletter', Controllers.newsletters)
+router.post('/newsletter', Controllers.newsletters);
 
-export default router
+router.use((req, res) => res.status(404).json());
+export default router;
