@@ -9,9 +9,16 @@
 Thanks goes to these wonderful people ([emoji key](https://github.com/all-contributors/all-contributors#emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
-| [<img src="https://avatars0.githubusercontent.com/u/4331946?v=4" width="100px;" alt="Jonas Gierer"/><br /><sub><b>Jonas Gierer</b></sub>](https://github.com/jgierer12)<br />[💻](https://github.com/kentcdodds/kentcdodds.com/commits?author=jgierer12 "Code") |
-| :---: |
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/ArcaneDiver"><img src="https://avatars0.githubusercontent.com/u/47637591?v=4" width="100px;" alt=""/><br /><sub><b>Michele Della Mea</b></sub></a><br /><a href="https://github.com/Coding-Bunker/website-backend/commits?author=ArcaneDiver" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
