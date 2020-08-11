@@ -1,24 +1,23 @@
 {
-        "projectName": "Coding Bunker Api",
-        "projectOwner": "website-backend",
+        "projectName": "kentcdodds.com",
+        "projectOwner": "kentcdodds",
         "repoType": "github",
         "repoHost": "https://github.com",
         "files": [
                 "README.md"
         ],
-        "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
-        "contributorTemplate": "<a href=\"<%= contributor.profile %>\"><img src=\"<%= contributor.avatar_url %>\" width=\"<%= options.imageSize %>px;\" alt=\"\"/><br /><sub><b><%= contributor.name %></b></sub></a>",
-        "types": {
-                "custom": {
-                        "symbol": "🔭",
-                        "description": "A custom contribution type.",
-                        "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
-                }
-        },
         "imageSize": 100,
         "commit": false,
-        "contributorsPerLine": 7,
-        "contributors": [],
-        "commitConvention": "none",
-        "skipCi": true
+        "contributors": [
+                {
+                        "login": "jgierer12",
+                        "name": "Jonas Gierer",
+                        "avatar_url": "https://avatars0.githubusercontent.com/u/4331946?v=4",
+                        "profile": "https://github.com/jgierer12",
+                        "contributions": [
+                                "code"
+                        ]
+                }
+        ],
+        "contributorsPerLine": 7
 }
