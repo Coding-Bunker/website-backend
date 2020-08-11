@@ -14,6 +14,7 @@ Thanks goes to these wonderful people ([emoji key](https://github.com/all-contri
 <table>
   <tr>
     <td align="center"><a href="https://github.com/ArcaneDiver"><img src="https://avatars0.githubusercontent.com/u/47637591?v=4" width="100px;" alt=""/><br /><sub><b>Michele Della Mea</b></sub></a><br /><a href="https://github.com/Coding-Bunker/website-backend/commits?author=ArcaneDiver" title="Code">💻</a> <a href="#infra-ArcaneDiver" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+    <td align="center"><a href="https://github.com/SimoSbara"><img src="https://avatars2.githubusercontent.com/u/38192614?v=4" width="100px;" alt=""/><br /><sub><b>SimoSbara</b></sub></a><br /><a href="https://github.com/Coding-Bunker/website-backend/commits?author=SimoSbara" title="Code">💻</a></td>
   </tr>
 </table>
 
