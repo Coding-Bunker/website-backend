@@ -18,6 +18,15 @@
         "code",
         "infra"
       ]
+    },
+    {
+      "login": "SimoSbara",
+      "name": "SimoSbara",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/38192614?v=4",
+      "profile": "https://github.com/SimoSbara",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
