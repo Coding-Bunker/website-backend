@@ -1,24 +1,25 @@
 {
-        "projectName": "website-backend",
-        "projectOwner": "Coding-Bunker",
-        "repoType": "github",
-        "repoHost": "https://github.com",
-        "files": [
-                "README.md"
-        ],
-        "imageSize": 100,
-        "commit": false,
-        "contributors": [
-                {
-                        "login": "ArcaneDiver",
-                        "name": "Michele Della Mea",
-                        "avatar_url": "https://avatars0.githubusercontent.com/u/47637591?v=4",
-                        "profile": "https://github.com/ArcaneDiver",
-                        "contributions": [
-                                "code"
-                        ]
-                }
-        ],
-        "contributorsPerLine": 7,
-        "skipCi": true
+  "projectName": "website-backend",
+  "projectOwner": "Coding-Bunker",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ArcaneDiver",
+      "name": "Michele Della Mea",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/47637591?v=4",
+      "profile": "https://github.com/ArcaneDiver",
+      "contributions": [
+        "code",
+        "infra"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
