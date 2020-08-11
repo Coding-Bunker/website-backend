@@ -12,5 +12,5 @@ router.use('/secure', secureRoutes);
 
 router.post('/newsletter', Controllers.newsletters);
 
-router.use((req, res) => res.status(404).json());
+router.use((req, res, next) => res.status(404).json());
 export default router;

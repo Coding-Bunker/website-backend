@@ -1,10 +1,14 @@
+import { getRepository } from 'typeorm';
 import { compareSync, genSalt, hash } from 'bcryptjs';
 import { verify } from 'jsonwebtoken';
 
 import { Account } from '../../entity/account';
+import { ApiKey } from '../../entity/apiKey';
 import { sendRefreshToken } from '../../utils/auth';
 import { createAccessToken, createRefreshToken } from '../../utils/token';
 import { registerSchema } from '../../utils/schemas';
+import { getAuthLevel } from '../../utils/auth';
+import { API_KEY_CALL_LIMIT, AUTHORIZATION_LEVEL } from '../../constants';
 
 export default {
 	login: async (req, res) => {
@@ -23,7 +27,8 @@ export default {
 			});
 
 		try {
-			const user = await Account.findOne({
+			const AccountRepo = getRepository(Account);
+			const user = await AccountRepo.findOne({
 				where: {
 					email: email,
 				},
@@ -71,7 +76,8 @@ export default {
 			});
 		}
 
-		const alreadyRegisteredUser = await Account.findOne({
+		const AccountRepo = getRepository(Account);
+		const alreadyRegisteredUser = await AccountRepo.findOne({
 			where: {
 				email,
 			},
@@ -86,7 +92,7 @@ export default {
 		const salt = await genSalt(10);
 		const hashedPassword = await hash(password, salt);
 
-		await Account.insert({
+		await AccountRepo.insert({
 			email,
 			password: hashedPassword,
 		});
@@ -122,7 +128,8 @@ export default {
 			});
 		}
 
-		const user = await Account.findOne({
+		const AccountRepo = getRepository(Account);
+		const user = await AccountRepo.findOne({
 			where: {
 				id: payload.userId,
 			},
@@ -145,6 +152,33 @@ export default {
 		res.status(200).json({
 			ok: true,
 			access_token: createAccessToken(user),
+		});
+	},
+	genApiKey: async (req, res) => {
+		const user = req.user;
+
+		if (user.apiKey)
+			return res.status(400).json({
+				ok: false,
+				message: 'user already have an api key',
+			});
+
+		const userAuthLevel = getAuthLevel(user);
+		const userRepo = getRepository(Account);
+		const apiKeyRepo = getRepository(ApiKey);
+
+		const apiKey = new ApiKey();
+		apiKey.remainingMontlyCall = API_KEY_CALL_LIMIT[userAuthLevel];
+
+		await apiKeyRepo.save(apiKey);
+
+		user.apiKey = apiKey;
+
+		const saveRes = await userRepo.save(user);
+
+		res.status(201).json({
+			ok: true,
+			api_key: apiKey.id,
 		});
 	},
 };

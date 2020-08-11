@@ -1,17 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity } from 'typeorm';
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	OneToMany,
+	OneToOne,
+	JoinColumn,
+	CreateDateColumn,
+} from 'typeorm';
+
+import { ApiKey } from './apiKey';
 import { Post } from './post';
 
 @Entity('account')
-export class Account extends BaseEntity {
+export class Account {
 	@PrimaryGeneratedColumn()
 	id = undefined;
 
-	@Column({
-		type: 'enum',
-		enum: ['admin', 'developer', 'moderator', 'donator', 'member'],
-		default: 'member',
+	@Column('int', {
+		default: 0,
 	})
-	role = 'member';
+	role = 0;
 
 	@Column('varchar', {
 		length: 50,
@@ -37,11 +45,23 @@ export class Account extends BaseEntity {
 	})
 	surname = '';
 
+	@OneToMany(type => Post, post => post.owner)
+	@JoinColumn()
+	posts = undefined;
+
 	@Column('int', {
 		default: 0,
 	})
-	tokenVersion = 0;
+	tokenVersion;
 
-	@OneToMany(type => Post)
-	posts = undefined;
+	@OneToOne(type => ApiKey, apiKey => apiKey.owner, {
+		nullable: true,
+	})
+	@JoinColumn()
+	apiKey = undefined;
+
+	@CreateDateColumn({
+		name: 'created_at',
+	})
+	createdAt;
 }

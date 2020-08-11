@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 
 import authController from './auth';
+import secureController from './secure';
 
 import { Account } from '../entity/account';
 
@@ -61,4 +62,5 @@ export default {
 		});
 	},
 	auth: authController,
+	secure: secureController,
 };

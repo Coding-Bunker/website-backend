@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Account } from './account';
 import { Attachment } from './attachment';
 
 @Entity('post')
-export class Post extends BaseEntity {
+export class Post {
 	@PrimaryGeneratedColumn()
 	id = undefined;
 
@@ -15,13 +15,9 @@ export class Post extends BaseEntity {
 
 	@Column('varchar', {
 		nullable: false,
-		length: 256,
 	})
-	description = '';
+	content = '';
 
-	@ManyToOne(type => Account)
-	account = undefined;
-
-	@OneToMany(type => Attachment)
-	attachments = undefined;
+	@ManyToOne(type => Account, owner => owner.posts)
+	owner = undefined;
 }

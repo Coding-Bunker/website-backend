@@ -10,7 +10,7 @@ router
 	.post('/login', Controllers.auth.login)
 	.post('/register', Controllers.auth.register)
 	.post('/logout', Controllers.auth.logout)
-
+	.post('/generate_api_key', Middlewares.auth.isAuth, Controllers.auth.genApiKey)
 // prettier-ignore
 router
 	.post('/refresh_token', Controllers.auth.refreshToken);

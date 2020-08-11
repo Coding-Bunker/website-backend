@@ -16,7 +16,7 @@ app.use(helmet()); // Secure http headers
 app.use(cors());
 
 app.use(bodyParser.json({ limit: '200kb' })); // Parse request body
-app.use(bodyParser.urlencoded()); // Parse form encoded request
+app.use(bodyParser.urlencoded({ extended: true })); // Parse form encoded request
 
 app.use(cookieParser());
 
