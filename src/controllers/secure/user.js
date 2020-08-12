@@ -6,11 +6,20 @@ export default {
 	getUsers: async (req, res) => {
 		const AccountRepo = getRepository(Account);
 
-		const accounts = await AccountRepo.find();
+		try {
+			const accounts = await AccountRepo.find({
+				relations: ['apiKey', 'posts'],
+			});
 
-		res.status(200).json({
-			accounts,
-		});
+			return res.status(200).json({
+				accounts,
+			});
+		} catch (error) {
+			return res.status(500).json({
+				ok: false,
+				message: 'internal error',
+			});
+		}
 	},
 	getUser: async (req, res) => {},
 	createUser: async (req, res) => {},

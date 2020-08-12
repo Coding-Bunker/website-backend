@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(morgan('dev')); // HTTP Logging
 
 // Routes
-app.use(routes);
+app.use('/api/v1', routes);
 
 createDbConnection();
 

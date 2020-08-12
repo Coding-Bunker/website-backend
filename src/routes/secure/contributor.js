@@ -7,8 +7,8 @@ const router = Router();
 
 // prettier-ignore
 router.route('/contributor/:id')
-	    .get(Controllers.secure.contributor.getContributor)
-	    .put(Controllers.secure.contributor.updateContributor)
+        .get(Controllers.secure.contributor.getContributor)
+        .put(Controllers.secure.contributor.updateContributor)
         .delete(Controllers.secure.contributor.deleteContributor)
 
 // prettier-ignore

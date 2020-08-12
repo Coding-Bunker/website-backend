@@ -46,18 +46,20 @@ export class Account {
 	surname = '';
 
 	@OneToMany(type => Post, post => post.owner)
-	@JoinColumn()
 	posts = undefined;
 
 	@Column('int', {
 		default: 0,
+		name: 'token_version',
 	})
 	tokenVersion;
 
 	@OneToOne(type => ApiKey, apiKey => apiKey.owner, {
 		nullable: true,
 	})
-	@JoinColumn()
+	@JoinColumn({
+		name: 'api_key_id',
+	})
 	apiKey = undefined;
 
 	@CreateDateColumn({

@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+
+import { Location } from './location';
 
 @Entity('event')
 export class Event {
@@ -22,9 +24,8 @@ export class Event {
 	})
 	date = undefined;
 
-	@Column('geography', {
-		nullable: true,
-	})
+	@OneToOne(type => Location)
+	@JoinColumn()
 	location = undefined;
 
 	@Column('varchar', {

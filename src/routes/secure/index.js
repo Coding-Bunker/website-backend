@@ -10,6 +10,7 @@ import PostRouter from './post';
 const router = Router();
 
 router.use(Middlewares.auth.isAuth);
+
 router.use(UserRouter);
 router.use(ContributorRouter);
 router.use(ProjectRouter);

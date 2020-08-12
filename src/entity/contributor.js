@@ -24,6 +24,8 @@ export class Contributor {
 	date = undefined;
 
 	@OneToOne(type => Account)
-	@JoinColumn()
+	@JoinColumn({
+		name: 'account_id',
+	})
 	idAcc = undefined;
 }

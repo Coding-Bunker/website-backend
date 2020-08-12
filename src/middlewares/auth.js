@@ -43,7 +43,9 @@ export const isAuthJWT = async (req, res, next) => {
 
 	try {
 		const AccountRepo = getRepository(Account);
-		const user = await AccountRepo.findOne(payload.userId);
+		const user = await AccountRepo.findOne(payload.userId, {
+			relations: ['apiKey', 'posts'],
+		});
 
 		if (!user)
 			return res.status(403).json({
@@ -74,7 +76,9 @@ export const isAuthApiKey = async (req, res, next) => {
 	const ApiKeyRepo = getRepository(ApiKey);
 
 	try {
-		const apiKey = await ApiKeyRepo.findOne(authHeader);
+		const apiKey = await ApiKeyRepo.findOne(authHeader, {
+			relations: ['owner', 'owner.posts', 'owner.apiKey'],
+		});
 
 		console.log(apiKey);
 		if (!apiKey)

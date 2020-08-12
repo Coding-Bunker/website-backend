@@ -14,24 +14,13 @@ export default {
 	login: async (req, res) => {
 		const { email, password } = req.body;
 
-		if (!email)
-			return res.status(400).json({
-				ok: false,
-				message: 'email is missing',
-			});
-
-		if (!password)
-			return res.status(400).json({
-				ok: false,
-				message: 'password is missing',
-			});
-
 		try {
 			const AccountRepo = getRepository(Account);
 			const user = await AccountRepo.findOne({
 				where: {
 					email: email,
 				},
+				relations: ['posts'],
 			});
 
 			if (!user)
@@ -63,18 +52,6 @@ export default {
 	},
 	register: async (req, res) => {
 		const { email, password } = req.body;
-
-		try {
-			await registerSchema.isValid({
-				email,
-				password,
-			});
-		} catch (e) {
-			return res.status(400).json({
-				ok: false,
-				message: e.message,
-			});
-		}
 
 		const AccountRepo = getRepository(Account);
 		const alreadyRegisteredUser = await AccountRepo.findOne({

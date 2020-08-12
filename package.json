@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel src --out-dir dist && node dist/index.js",
+    "dev": "nodemon -i dist --exec \"babel src --out-dir dist && node dist/index.js\"",
     "format": "prettier --write \"**/*.{js,json}\""
   },
   "author": "",
