@@ -4,7 +4,7 @@ import { Attachment } from './attachment';
 
 @Entity('post')
 export class Post {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn('uuid')
 	id = undefined;
 
 	@Column('varchar', {

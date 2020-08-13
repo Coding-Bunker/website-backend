@@ -4,7 +4,7 @@ import { Location } from './location';
 
 @Entity('event')
 export class Event {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn('uuid')
 	id = undefined;
 
 	@Column('varchar', {

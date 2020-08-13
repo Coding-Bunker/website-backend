@@ -3,7 +3,7 @@ import { Account } from './account';
 
 @Entity('contributor')
 export class Contributor {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn('uuid')
 	id = undefined;
 
 	@Column('int', {

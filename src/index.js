@@ -2,7 +2,6 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
 import 'dotenv-safe/config';
-import 'reflect-metadata';
 
 import app from './app';
 

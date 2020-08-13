@@ -13,7 +13,7 @@ import { Post } from './post';
 
 @Entity('account')
 export class Account {
-	@PrimaryGeneratedColumn()
+	@PrimaryGeneratedColumn('uuid')
 	id = undefined;
 
 	@Column('int', {
@@ -37,13 +37,13 @@ export class Account {
 		nullable: true,
 		length: 24,
 	})
-	name = '';
+	firstName = '';
 
 	@Column('varchar', {
 		nullable: true,
 		length: 24,
 	})
-	surname = '';
+	firstName = '';
 
 	@OneToMany(type => Post, post => post.owner)
 	posts = undefined;

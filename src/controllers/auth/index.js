@@ -16,6 +16,7 @@ export default {
 
 		try {
 			const AccountRepo = getRepository(Account);
+
 			const user = await AccountRepo.findOne({
 				where: {
 					email: email,
@@ -32,7 +33,7 @@ export default {
 			if (!compareSync(password, user.password))
 				return res.status(400).json({
 					ok: false,
-					message: 'password is wrong',
+					message: 'email or password are invalid',
 				});
 
 			sendRefreshToken(res, createRefreshToken(user));
@@ -42,41 +43,50 @@ export default {
 				access_token: createAccessToken(user),
 			});
 		} catch (e) {
-			console.error(e.message);
+			console.error(e);
 
 			return res.status(500).json({
 				ok: false,
-				message: e.message,
+				message: 'internal error',
 			});
 		}
 	},
 	register: async (req, res) => {
 		const { email, password } = req.body;
 
-		const AccountRepo = getRepository(Account);
-		const alreadyRegisteredUser = await AccountRepo.findOne({
-			where: {
-				email,
-			},
-		});
-
-		if (alreadyRegisteredUser)
-			return res.status(400).json({
-				ok: false,
-				message: 'user already exists',
+		try {
+			const AccountRepo = getRepository(Account);
+			const alreadyRegisteredUser = await AccountRepo.findOne({
+				where: {
+					email,
+				},
 			});
 
-		const salt = await genSalt(10);
-		const hashedPassword = await hash(password, salt);
+			if (alreadyRegisteredUser)
+				return res.status(400).json({
+					ok: false,
+					message: 'user already exists',
+				});
 
-		await AccountRepo.insert({
-			email,
-			password: hashedPassword,
-		});
+			const salt = await genSalt(10);
+			const hashedPassword = await hash(password, salt);
 
-		res.status(201).json({
-			ok: true,
-		});
+			await AccountRepo.insert({
+				email,
+				password: hashedPassword,
+			});
+
+			res.status(201).json({
+				ok: true,
+			});
+		} catch (e) {
+			console.error(e);
+
+			return res.status(500).json({
+				ok: false,
+				message: 'internal error',
+			});
+		}
 	},
 	logout: async (req, res) => {
 		sendRefreshToken(res, '');
@@ -141,17 +151,36 @@ export default {
 			});
 
 		const userAuthLevel = getAuthLevel(user);
+
 		const userRepo = getRepository(Account);
 		const apiKeyRepo = getRepository(ApiKey);
 
 		const apiKey = new ApiKey();
 		apiKey.remainingMontlyCall = API_KEY_CALL_LIMIT[userAuthLevel];
 
-		await apiKeyRepo.save(apiKey);
+		try {
+			await apiKeyRepo.save(apiKey);
+		} catch (e) {
+			console.error(e);
+
+			return res.status(500).json({
+				ok: false,
+				message: 'internal error',
+			});
+		}
 
 		user.apiKey = apiKey;
 
-		const saveRes = await userRepo.save(user);
+		try {
+			await userRepo.save(user);
+		} catch (e) {
+			console.error(e);
+
+			return res.status(500).json({
+				ok: false,
+				message: 'internal error',
+			});
+		}
 
 		res.status(201).json({
 			ok: true,
