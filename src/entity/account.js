@@ -43,7 +43,7 @@ export class Account {
 		nullable: true,
 		length: 24,
 	})
-	firstName = '';
+	lastName = '';
 
 	@OneToMany(type => Post, post => post.owner)
 	posts = undefined;

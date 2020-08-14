@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel src --out-dir dist && node dist/index.js",
-    "dev": "nodemon -i dist --exec \"babel src --out-dir dist && node dist/index.js\"",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "build": "babel src --out-dir dist",
+    "dev": "cross-env NODE_ENV=development nodemon -i dist --exec \"babel src --out-dir dist && node dist/index.js\"",
     "format": "prettier --write \"**/*.{js,json}\""
   },
   "author": "",
@@ -20,6 +21,7 @@
     "helmet": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "loader": "^2.1.1",
+    "lodash": "^4.17.20",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "pg": "^8.3.0",

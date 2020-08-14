@@ -80,7 +80,6 @@ export const isAuthApiKey = async (req, res, next) => {
 			relations: ['owner', 'owner.posts', 'owner.apiKey'],
 		});
 
-		console.log(apiKey);
 		if (!apiKey)
 			return res.status(401).json({
 				ok: false,

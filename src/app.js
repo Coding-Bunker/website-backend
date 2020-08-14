@@ -6,7 +6,6 @@ import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 
 import routes from './routes';
-import { createDbConnection } from './db';
 import DbService from './services/DbService';
 
 const app = express();
@@ -24,7 +23,5 @@ app.use(morgan('dev')); // HTTP Logging
 
 // Routes
 app.use('/api/v1', routes);
-
-createDbConnection();
 
 export default app;

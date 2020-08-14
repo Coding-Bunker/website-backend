@@ -1,5 +1,5 @@
 import { getRepository } from 'typeorm';
-import { compareSync, genSalt, hash } from 'bcryptjs';
+import { compareSync } from 'bcryptjs';
 import { verify } from 'jsonwebtoken';
 
 import { Account } from '../../entity/account';
@@ -7,7 +7,7 @@ import { ApiKey } from '../../entity/apiKey';
 import { sendRefreshToken } from '../../utils/auth';
 import { createAccessToken, createRefreshToken } from '../../utils/token';
 import { registerSchema } from '../../utils/schemas';
-import { getAuthLevel } from '../../utils/auth';
+import { getAuthLevel, hashPassword } from '../../utils/auth';
 import { API_KEY_CALL_LIMIT, AUTHORIZATION_LEVEL } from '../../constants';
 
 export default {
@@ -68,8 +68,7 @@ export default {
 					message: 'user already exists',
 				});
 
-			const salt = await genSalt(10);
-			const hashedPassword = await hash(password, salt);
+			const hashedPassword = await hashPassword(password);
 
 			await AccountRepo.insert({
 				email,

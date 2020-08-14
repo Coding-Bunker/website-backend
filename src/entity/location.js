@@ -7,4 +7,10 @@ export class Location {
 
 	@Column('date')
 	date = undefined;
+
+	@Column('double precision')
+	lat = undefined;
+
+	@Column('double precision')
+	long = undefined;
 }
