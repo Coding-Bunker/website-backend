@@ -5,9 +5,6 @@ export class Location {
 	@PrimaryGeneratedColumn('uuid')
 	id = undefined;
 
-	@Column('date')
-	date = undefined;
-
 	@Column('double precision')
 	lat = undefined;
 

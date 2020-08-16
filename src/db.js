@@ -1,15 +1,15 @@
-import { createConnection, getConnectionOptions } from 'typeorm';
-import * as path from 'path';
-import * as fs from 'fs';
-import { Account } from './entity/account';
-import { Post } from './entity/post';
-import { Attachment } from './entity/attachment';
+import { createConnection } from 'typeorm';
+
+import logger from './configs/logger';
 
 export const createDbConnection = async () => {
 	try {
 		const connection = await createConnection();
 
-		console.log('[DB] Connection instaurated');
+		logger.info('Connection instaurated');
+		logger.debug('Debuggo');
+		logger.warn('Warno');
+		logger.error('Errarro');
 
 		return connection;
 	} catch (e) {
