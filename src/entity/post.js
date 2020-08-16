@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { Account } from './account';
 import { Attachment } from './attachment';
 
@@ -20,4 +20,7 @@ export class Post {
 
 	@ManyToOne(type => Account, owner => owner.posts)
 	owner = undefined;
+
+	@OneToMany(type => Attachment, attachment => attachment.post)
+	attachment = undefined;
 }
