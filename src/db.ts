@@ -1,4 +1,3 @@
-import { emit } from 'process';
 import { createConnection } from 'typeorm';
 
 import logger from './configs/logger';
