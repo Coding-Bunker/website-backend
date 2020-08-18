@@ -2,6 +2,7 @@ import { sign } from 'jsonwebtoken';
 
 import { Account } from '../entity/account';
 import { Tokens } from '../types';
+
 export const createAccessToken = (account: Account) =>
 	sign(
 		{

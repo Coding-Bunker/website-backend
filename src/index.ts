@@ -4,16 +4,23 @@ import 'reflect-metadata';
 import './types';
 
 import './configs/env';
-
+import logger from './configs/logger';
 import app from './app';
 import { createDbConnection } from './db';
+import { promisify } from './utils';
 
 const port = process.env.PORT || 8080;
 
 (async () => {
-	await createDbConnection();
+	try {
+		await createDbConnection();
+		await promisify(cb => app.listen(port, cb));
 
-	app.listen(port, () => {
-		console.log(`Server listening at ${port} port`);
-	});
+		logger.info({ message: `listening at ${port} port`, label: 'SERVER' });
+	} catch (e) {
+		logger.error({
+			label: 'DB',
+			message: e.message,
+		});
+	}
 })();
