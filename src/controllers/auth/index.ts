@@ -22,11 +22,10 @@ export default {
 				where: {
 					email: email,
 				},
-				relations: ['posts'],
 			});
 
 			if (!user)
-				return res.status(404).json({
+				return res.status(400).json({
 					ok: false,
 					message: 'user not found',
 				});

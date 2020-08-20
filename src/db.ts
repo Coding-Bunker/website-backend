@@ -1,14 +1,15 @@
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 
 import logger from './configs/logger';
 
 export const createDbConnection = async () => {
 	const connection = await createConnection();
 
-	logger.info({
-		label: 'DB',
-		message: 'Connection instaurated',
-	});
-
 	return connection;
+};
+
+export const closeConnection = async () => {
+	const connection = await getConnection();
+
+	await connection.close();
 };

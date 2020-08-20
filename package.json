@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "test": "jest",
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "build": "tsc",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
-    "format": "prettier --write \"**/*.{js,ts,json}\""
+    "format": "prettier --write \"**/*.{js,ts,json}\"",
+    "test": "cross-env jest",
+    "test:watch": "cross-env jest --watch",
+    "test:CI": "cross-env CI=true jest"
   },
   "author": "",
   "license": "ISC",
@@ -37,24 +41,50 @@
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.7",
+    "@types/faker": "^4.1.12",
+    "@types/jest": "^26.0.10",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/lodash": "^4.14.159",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.0.27",
+    "@types/supertest": "^2.0.10",
     "@types/yup": "^0.29.5",
     "cross-env": "^7.0.2",
+    "faker": "^4.1.0",
     "husky": "^4.2.5",
+    "jest": "^26.4.0",
     "lint-staged": "^10.2.11",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
+    "supertest": "^4.0.2",
+    "ts-jest": "^26.2.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "cross-env lint-staged && yarn test:CI"
     }
   },
   "lint-staged": {
-    "*.ts": "prettier --write"
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/__tests__/**/?(*.)+(spec|test).+(ts|tsx|js)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "setupFiles": [
+      "dotenv-safe/config"
+    ]
   }
 }

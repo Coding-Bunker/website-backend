@@ -32,7 +32,6 @@ export const everyFieldRequiredSchema = (schema: Yup.ObjectSchema<any>) =>
 
 		const isValid = schemaNodes.map(key => !!item[key]).reduce((acc, value) => acc && value);
 
-		console.log(item, isValid);
 		return isValid;
 	});
 

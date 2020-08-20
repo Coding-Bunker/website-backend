@@ -39,13 +39,13 @@ export class Account {
 		nullable: true,
 		length: 24,
 	})
-	firstName: string;
+	firstName?: string;
 
 	@Column('varchar', {
 		nullable: true,
 		length: 24,
 	})
-	lastName: string;
+	lastName?: string;
 
 	@OneToMany(type => Post, post => post.owner)
 	posts: Post[];
