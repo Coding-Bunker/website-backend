@@ -21,9 +21,7 @@ describe('Middlewares - Auth', () => {
 		beforeAll(async done => {
 			try {
 				await createDbConnection();
-
 				mockUser = createMockUser();
-
 				mockUser = await saveMockUser(mockUser);
 
 				done();
@@ -34,9 +32,10 @@ describe('Middlewares - Auth', () => {
 
 		afterAll(async done => {
 			try {
+				await deleteMockUser(mockUser);
 				await closeConnection();
 
-				await deleteMockUser(mockUser);
+				done();
 			} catch (e) {
 				done.fail(e.message);
 			}

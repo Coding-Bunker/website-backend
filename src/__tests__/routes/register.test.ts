@@ -5,7 +5,7 @@ import app from '../../app';
 import { createDbConnection, closeConnection } from '../../db';
 import { Account } from '../../entity/account';
 
-import { createMockUser, deleteMockUser } from '../mocks/functions';
+import { createMockUser, deleteMockUserByEmail } from '../mocks/functions';
 
 describe('Routes - /auth/register', () => {
 	const request = supertest(app);
@@ -37,7 +37,7 @@ describe('Routes - /auth/register', () => {
 
 	afterEach(async done => {
 		try {
-			await deleteMockUser(mockUser);
+			await deleteMockUserByEmail(mockUser.email);
 			done();
 		} catch (e) {
 			done.fail(e.message);

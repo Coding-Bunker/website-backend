@@ -27,5 +27,13 @@ export const saveMockUser = async (account: Account) => {
 export const deleteMockUser = async (account: Account) => {
 	const AccountRepo = getRepository(Account);
 
-	await AccountRepo.delete(account);
+	await AccountRepo.delete(account.id);
+};
+
+export const deleteMockUserByEmail = async (email: string) => {
+	const AccountRepo = getRepository(Account);
+
+	await AccountRepo.delete({
+		email,
+	});
 };
