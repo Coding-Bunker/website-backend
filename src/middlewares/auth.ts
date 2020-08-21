@@ -24,7 +24,7 @@ export const isAuthJWT = async (req: Request, res: Response, next: NextFunction)
 	const authHeader = req.headers['authorization'] as string;
 
 	if (!authHeader)
-		res.status(401).json({
+		return res.status(401).json({
 			ok: false,
 			message: 'unauthorized',
 		});
