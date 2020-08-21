@@ -1,0 +1,27 @@
+name: CI
+on: pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12"
+
+      # Get local dependencies
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+
+      # Build
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: build
+
+      # Run tests
+      - uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: test
