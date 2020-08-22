@@ -17,4 +17,6 @@ router.use(ProjectRouter);
 router.use(EventRouter);
 router.use(PostRouter);
 
+router.all('*', (req, res) => res.status(200).json({ ok: true }));
+
 export default router;

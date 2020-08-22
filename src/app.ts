@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse form encoded reques
 
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === 'development') {
+if (__DEV__) {
 	app.use(
 		morgan('dev', {
 			stream: {

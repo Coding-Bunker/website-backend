@@ -9,17 +9,17 @@ export class Post {
 
 	@Column('varchar', {
 		length: 100,
-		nullable: false,
 	})
 	title: string;
 
-	@Column('varchar', {
-		nullable: false,
-	})
-	content: string;
+	@Column('varchar')
+	content_html: string;
+
+	@Column('varchar')
+	content_markdown: string;
 
 	@ManyToOne(type => Account, owner => owner.posts)
-	owner: string;
+	owner: Account;
 
 	@OneToMany(type => Attachment, attachment => attachment.post)
 	attachment: Attachment[];

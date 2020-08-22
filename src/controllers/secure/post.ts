@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { DeepPartial, getRepository } from 'typeorm';
 
 import { Post } from '../../entity/post';
+import { Account } from '../../entity/account';
+import { parseMarkdown } from '../../utils/remark';
 
 export default {
 	getPosts: async (req: Request, res: Response) => {
@@ -46,18 +48,30 @@ export default {
 		}
 	},
 	createPost: async (req: Request, res: Response) => {
+		const AccountRepo = getRepository(Account);
 		const PostRepo = getRepository(Post);
+		const user = req.user as Account;
 
 		try {
-			const newPost = PostRepo.create({
-				...req.body,
+			const contentMD: string = req.body.content;
+			const contentHTML: string = parseMarkdown(contentMD);
+			delete req.body.content;
+
+			const newPost = PostRepo.create(req.body as DeepPartial<Post>);
+
+			const savedPost = await PostRepo.save({
+				...newPost,
+				content_markdown: contentMD,
+				content_html: contentHTML,
 			});
 
-			await PostRepo.insert(newPost);
+			user.posts.push(savedPost);
+
+			await AccountRepo.save(user);
 
 			res.status(201).json({
 				ok: true,
-				post: newPost,
+				post: savedPost,
 			});
 		} catch (e) {
 			console.error(e);
@@ -73,7 +87,16 @@ export default {
 		const PostRepo = getRepository(Post);
 
 		try {
-			await PostRepo.update(postID, req.body);
+			const toUpdate: DeepPartial<Post> = req.body;
+
+			if (req.body.content) {
+				toUpdate.content_markdown = req.body.content;
+				toUpdate.content_html = parseMarkdown(req.body.content);
+
+				delete req.body.content;
+			}
+
+			await PostRepo.update(postID, toUpdate);
 
 			const updatedPost = await PostRepo.findOne(postID);
 
