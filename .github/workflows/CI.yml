@@ -19,3 +19,9 @@ jobs:
 
       # Run tests
       - run: yarn test
+        env:
+          PORT: 10000
+          JWT_ACCESS_TOKEN_SECRET: foekfskefoskfekoskoe
+          JWT_REFRESH_TOKEN_SECRET: feoksefskofeokfs24903
+          DB_URI: ${{ secrets.DB_URI }}
+          NODE_ENV: test
