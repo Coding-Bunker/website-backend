@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import { getRepository } from 'typeorm';
 
 import app from '../../app';
-import { createDbConnection, closeConnection } from '../../db';
+import { createDbConnection, closeDbConnection } from '../../db';
 import { Account } from '../../entity/account';
 
 import { createMockUser, deleteMockUserByEmail } from '../mocks/functions';
@@ -24,7 +24,7 @@ describe('Routes - /auth/register', () => {
 
 	afterAll(async done => {
 		try {
-			await closeConnection();
+			await closeDbConnection();
 			done();
 		} catch (e) {
 			done.fail(e.message);

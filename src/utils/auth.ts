@@ -1,9 +1,11 @@
 import { Response } from 'express';
+import { getRepository } from 'typeorm';
 import { genSalt, hash } from 'bcryptjs';
 
 import { createRefreshToken } from './token';
-import { AUTHORIZATION_LEVEL } from '../constants';
+import { AUTHORIZATION_LEVEL, API_KEY_CALL_LIMIT } from '../constants';
 import { Account } from '../entity/account';
+import { ApiKey } from '../entity/apiKey';
 import { Auhorization } from '../types';
 
 export const sendRefreshToken = (res: Response, token: string) => {
@@ -23,4 +25,22 @@ export const hashPassword = async (password: string) => {
 	const hashedPassword = hash(password, salt);
 
 	return hashedPassword;
+};
+
+export const associateApiKeyToAccount = async (account: Account) => {
+	const userAuthLevel = getAuthLevel(account);
+
+	const AccountRepo = getRepository(Account);
+	const ApiKeyRepo = getRepository(ApiKey);
+
+	const apiKey = new ApiKey();
+	apiKey.remainingMontlyCall = API_KEY_CALL_LIMIT[userAuthLevel];
+
+	await ApiKeyRepo.save(apiKey);
+
+	account.apiKey = apiKey;
+
+	await AccountRepo.save(account);
+
+	return apiKey;
 };

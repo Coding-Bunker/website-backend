@@ -8,7 +8,7 @@ export const createDbConnection = async () => {
 	return connection;
 };
 
-export const closeConnection = async () => {
+export const closeDbConnection = async () => {
 	const connection = await getConnection();
 
 	await connection.close();

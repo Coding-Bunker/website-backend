@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as Yup from 'yup';
 
+import { UUIDRegExp } from '../utils';
+
 export const schemaValidation = (schema: Yup.ObjectSchema<any>) => async (
 	req: Request,
 	res: Response,
@@ -22,7 +24,6 @@ export const checkUUIDParam = (paramToTest: string) => (
 	res: Response,
 	next: NextFunction,
 ) => {
-	const UUIDRegExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 	const parameter = req.params[paramToTest];
 
 	if (UUIDRegExp.test(parameter)) next();

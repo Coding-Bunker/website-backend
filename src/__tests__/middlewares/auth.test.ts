@@ -3,7 +3,7 @@ import * as faker from 'faker';
 
 import app from '../../app';
 import { authLevel, isAuth, isAuthApiKey, isAuthJWT } from '../../middlewares/auth';
-import { createDbConnection, closeConnection } from '../../db';
+import { createDbConnection, closeDbConnection } from '../../db';
 import { Account } from '../../entity/account';
 import { createAccessToken } from '../../utils/token';
 
@@ -33,7 +33,7 @@ describe('Middlewares - Auth', () => {
 		afterAll(async done => {
 			try {
 				await deleteMockUser(mockUser);
-				await closeConnection();
+				await closeDbConnection();
 
 				done();
 			} catch (e) {

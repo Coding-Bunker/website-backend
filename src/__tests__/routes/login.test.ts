@@ -3,7 +3,7 @@ import * as faker from 'faker';
 import { verify } from 'jsonwebtoken';
 
 import app from '../../app';
-import { createDbConnection, closeConnection } from '../../db';
+import { createDbConnection, closeDbConnection } from '../../db';
 import { hashPassword } from '../../utils/auth';
 import { Account } from '../../entity/account';
 
@@ -35,7 +35,7 @@ describe('Routes - /auth/login', () => {
 	afterAll(async done => {
 		try {
 			await deleteMockUser(mockSavedUser);
-			await closeConnection();
+			await closeDbConnection();
 		} catch (e) {
 			done.fail(e.message);
 		}

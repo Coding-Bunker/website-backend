@@ -7,9 +7,10 @@ import { Account } from '../../entity/account';
 import { ApiKey } from '../../entity/apiKey';
 import { sendRefreshToken } from '../../utils/auth';
 import { createAccessToken, createRefreshToken } from '../../utils/token';
-import { getAuthLevel, hashPassword } from '../../utils/auth';
+import { getAuthLevel, hashPassword, associateApiKeyToAccount } from '../../utils/auth';
 import { API_KEY_CALL_LIMIT, AUTHORIZATION_LEVEL } from '../../constants';
 import { Tokens } from '../../types';
+import logger from '../../configs/logger';
 
 export default {
 	login: async (req: Request, res: Response) => {
@@ -149,41 +150,23 @@ export default {
 				message: 'user already have an api key',
 			});
 
-		const userAuthLevel = getAuthLevel(user);
-
-		const userRepo = getRepository(Account);
-		const apiKeyRepo = getRepository(ApiKey);
-
-		const apiKey = new ApiKey();
-		apiKey.remainingMontlyCall = API_KEY_CALL_LIMIT[userAuthLevel];
-
 		try {
-			await apiKeyRepo.save(apiKey);
-		} catch (e) {
-			console.error(e);
+			const apiKey = await associateApiKeyToAccount(user);
 
-			return res.status(500).json({
+			res.status(201).json({
+				ok: true,
+				api_key: apiKey.id,
+			});
+		} catch (e) {
+			logger.error({
+				label: 'DB',
+				message: e.message,
+			});
+
+			res.status(500).json({
 				ok: false,
 				message: 'internal error',
 			});
 		}
-
-		user.apiKey = apiKey;
-
-		try {
-			await userRepo.save(user);
-		} catch (e) {
-			console.error(e);
-
-			return res.status(500).json({
-				ok: false,
-				message: 'internal error',
-			});
-		}
-
-		res.status(201).json({
-			ok: true,
-			api_key: apiKey.id,
-		});
 	},
 };

@@ -3,7 +3,7 @@ import * as faker from 'faker';
 import * as _ from 'lodash';
 
 import { Account } from '../../entity/account';
-import { fake } from 'faker';
+import { ApiKey } from '../../entity/apiKey';
 
 export const createMockUser = () => {
 	const AccountRepo = getRepository(Account);
@@ -36,4 +36,10 @@ export const deleteMockUserByEmail = async (email: string) => {
 	await AccountRepo.delete({
 		email,
 	});
+};
+
+export const deleteApiKeyFromId = async (id: string) => {
+	const ApiKeyRepo = getRepository(ApiKey);
+
+	await ApiKeyRepo.delete(id);
 };
