@@ -36,6 +36,8 @@ describe('Routes - /auth/login', () => {
 		try {
 			await deleteMockUser(mockSavedUser);
 			await closeDbConnection();
+
+			done();
 		} catch (e) {
 			done.fail(e.message);
 		}

@@ -1,8 +1,20 @@
 import { Response } from 'express';
 import { compare } from 'bcryptjs';
+import * as faker from 'faker';
+import { getRepository } from 'typeorm';
 
-import { sendRefreshToken, getAuthLevel, hashPassword } from '../../utils/auth';
+import {
+	sendRefreshToken,
+	getAuthLevel,
+	hashPassword,
+	associateApiKeyToAccount,
+} from '../../utils/auth';
 import { AUTHORIZATION_LEVEL } from '../../constants';
+import { createDbConnection, closeDbConnection } from '../../db';
+import { Account } from '../../entity/account';
+import { ApiKey } from '../../entity/apiKey';
+
+import { createMockUser, saveMockUser, deleteMockUser } from '../mocks/functions';
 
 describe('Utils - Auth', () => {
 	describe('sendRefreshToken', () => {
@@ -45,13 +57,78 @@ describe('Utils - Auth', () => {
 
 	describe('hashPassword', () => {
 		it('Compare the password', async done => {
-			const mockPassowrd = 'fjeifjsfej';
+			const mockPassowrd = faker.internet.password();
 
 			const result = await hashPassword(mockPassowrd);
 
 			expect(await compare(mockPassowrd, result)).toBe(true);
 
 			done();
+		});
+	});
+
+	describe('associateApiKeyToAccount', () => {
+		let mockAccount: Account;
+
+		beforeAll(async done => {
+			try {
+				await createDbConnection();
+
+				done();
+			} catch (e) {
+				done.fail(e.message);
+			}
+		});
+
+		afterAll(async done => {
+			try {
+				await closeDbConnection();
+
+				done();
+			} catch (e) {
+				done.fail(e.message);
+			}
+		});
+
+		beforeEach(async done => {
+			try {
+				mockAccount = createMockUser();
+				mockAccount = await saveMockUser(mockAccount);
+
+				done();
+			} catch (e) {
+				done.fail(e);
+			}
+		});
+
+		afterEach(async done => {
+			try {
+				await deleteMockUser(mockAccount);
+
+				done();
+			} catch (e) {
+				done.fail(e);
+			}
+		});
+
+		it('sould associate user to a new api_key', async done => {
+			const apiKey = await associateApiKeyToAccount(mockAccount);
+			const AccountRepo = getRepository(Account);
+
+			try {
+				const accountWithRelation = await AccountRepo.findOne(mockAccount.id, {
+					relations: ['apiKey'],
+				});
+
+				if (!accountWithRelation) return done.fail('account does not exists');
+
+				expect(accountWithRelation.apiKey).not.toBeNull();
+				expect(accountWithRelation.apiKey).toBeInstanceOf(ApiKey);
+
+				done();
+			} catch (e) {
+				done.fail(e);
+			}
 		});
 	});
 });
