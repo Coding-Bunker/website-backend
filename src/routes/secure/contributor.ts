@@ -3,17 +3,23 @@ import { Router } from 'express';
 import Controllers from '../../controllers';
 import MiddleWares from '../../middlewares';
 
+import {
+	contributorSchema,
+	partiallyRequiredSchema,
+	everyFieldRequiredSchema,
+} from '.././../utils/schemas';
+
 const router = Router();
 
 // prettier-ignore
 router.route('/contributor/:id')
         .get(Controllers.secure.contributor.getContributor)
-        .put(Controllers.secure.contributor.updateContributor)
+        .put(MiddleWares.validation.schemaValidation(partiallyRequiredSchema(contributorSchema)), Controllers.secure.contributor.updateContributor)
         .delete(Controllers.secure.contributor.deleteContributor)
 
 // prettier-ignore
 router.route("/contributor")
         .get(Controllers.secure.contributor.getContributors)
-        .post(Controllers.secure.contributor.createContributor)
+        .post(MiddleWares.validation.schemaValidation(everyFieldRequiredSchema(contributorSchema)), Controllers.secure.contributor.createContributor)
 
 export default router;
