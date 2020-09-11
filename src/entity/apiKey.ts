@@ -1,11 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, CreateDateColumn } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	OneToOne,
+	CreateDateColumn,
+	BaseEntity,
+} from 'typeorm';
 
 import { Account } from './account';
 import { API_KEY_CALL_LIMIT } from '../constants';
 import { Values } from '../types';
 
 @Entity('api_key')
-export class ApiKey {
+export class ApiKey extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

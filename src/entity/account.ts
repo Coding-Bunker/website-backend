@@ -6,6 +6,7 @@ import {
 	OneToOne,
 	JoinColumn,
 	CreateDateColumn,
+	BaseEntity,
 } from 'typeorm';
 
 import { ApiKey } from './apiKey';
@@ -14,7 +15,7 @@ import { AUTHORIZATION_LEVEL } from '../constants';
 import { Values } from '../types';
 
 @Entity('account')
-export class Account {
+export class Account extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

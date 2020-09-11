@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, BaseEntity } from 'typeorm';
 import { Account } from './account';
 import { Attachment } from './attachment';
 
 @Entity('post')
-export class Post {
+export class Post extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
