@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
-    "test": "cross-env jest",
+    "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env jest --watch",
     "test:CI": "cross-env CI=true jest"
   },
