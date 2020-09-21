@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "test": "jest",
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/index.js",
@@ -12,6 +12,9 @@
     "test": "cross-env NODE_ENV=test jest",
     "test:watch": "cross-env jest --watch",
     "test:CI": "cross-env CI=true jest"
+  },
+  "engines": {
+    "node": "12.18.2"
   },
   "author": "",
   "license": "ISC",
