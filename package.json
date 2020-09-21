@@ -83,6 +83,7 @@
     },
     "setupFiles": [
       "dotenv-safe/config"
-    ]
+    ],
+    "testTimeout": 10000
   }
 }
