@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - run: npm ci
       - run: npm run build
       - uses: akhileshns/heroku-deploy@v3.4.6
         with:
