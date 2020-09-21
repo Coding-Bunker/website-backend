@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "test": "jest",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node dist/index.js",
-    "build": "tsc",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
+    "start": "npx cross-env NODE_ENV=production node dist/index.js",
+    "build": "npx tsc",
+    "dev": "npx cross-env NODE_ENV=development nodemon src/index.ts",
     "format": "prettier --write \"**/*.{js,ts,json}\"",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:watch": "cross-env jest --watch",
-    "test:CI": "cross-env CI=true jest"
+    "test": "npx cross-env NODE_ENV=test jest",
+    "test:watch": "npx cross-env jest --watch",
+    "test:CI": "npx cross-env CI=true jest"
   },
   "engines": {
     "node": "12.18.2"
