@@ -4,7 +4,7 @@ module.exports = {
 	name: 'default',
 	type: 'postgres',
 
-	url: process.env.DB_URI,
+	url: process.env.DB_URL,
 
 	ssl: {
 		rejectUnauthorized: false,
