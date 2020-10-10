@@ -12,6 +12,7 @@ export default {
 		const posts = await PostRepo.find({
 			relations: ['attachment', 'owner'],
 		});
+
 		try {
 			res.status(200).json({
 				posts,
