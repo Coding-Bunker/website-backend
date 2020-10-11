@@ -13,10 +13,7 @@
     "test:watch": "npx cross-env jest --watch",
     "test:CI": "npx cross-env CI=true jest"
   },
-  "engines": {
-    "node": "12.18.2"
-  },
-  "author": "",
+  "author": "Coding Bunker DEV team",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
