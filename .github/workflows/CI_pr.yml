@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: "12"
+          node-version: '12'
 
       # Install dep
       - run: yarn install
@@ -23,4 +23,5 @@ jobs:
           PORT: 10000
           JWT_ACCESS_TOKEN_SECRET: foekfskefoskfekoskoe
           JWT_REFRESH_TOKEN_SECRET: feoksefskofeokfs24903
-          DB_URI: ${{ secrets.DB_URI }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_TEST_URL: ${{ secrets.DB_TEST_URL }}
