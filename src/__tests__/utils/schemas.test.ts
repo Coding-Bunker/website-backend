@@ -9,7 +9,7 @@ describe('Utils - Schemas', () => {
 			mockUser = {
 				email: 'fkfeko@fekfeko.com',
 				password: 'bella password',
-				role: 1,
+				role: 'member',
 				firstName: 'Nome',
 				lastName: 'Cognome',
 			};
@@ -39,7 +39,7 @@ describe('Utils - Schemas', () => {
 	describe('partiallyRequiredSchema', () => {
 		beforeEach(() => {
 			mockUser = {
-				role: 1,
+				role: 'member',
 			};
 		});
 

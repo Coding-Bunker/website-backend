@@ -15,15 +15,13 @@ export const userSchema = Yup.object().shape({
 	password: Yup.string().min(6, 'Min 6 characters').max(18, 'Max 18 characters'),
 	firstName: Yup.string(),
 	lastName: Yup.string(),
-	role: Yup.number()
-		.min(
-			AUTHORIZATION_LEVEL.MEMBER,
-			`Role has to be beetwen ${AUTHORIZATION_LEVEL.MEMBER} and ${AUTHORIZATION_LEVEL.ADMIN}`,
-		)
-		.max(
-			AUTHORIZATION_LEVEL.ADMIN,
-			`Role has to be beetwen ${AUTHORIZATION_LEVEL.MEMBER} and ${AUTHORIZATION_LEVEL.ADMIN}`,
-		),
+	role: Yup.string().oneOf([
+		AUTHORIZATION_LEVEL.ADMIN,
+		AUTHORIZATION_LEVEL.MODERATOR,
+		AUTHORIZATION_LEVEL.DEVELOPER,
+		AUTHORIZATION_LEVEL.DONATOR,
+		AUTHORIZATION_LEVEL.MEMBER,
+	]),
 });
 
 export const postSchema = Yup.object().shape({

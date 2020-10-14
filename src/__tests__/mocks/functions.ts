@@ -5,23 +5,21 @@ import * as _ from 'lodash';
 import { Account } from '../../entity/account';
 import { ApiKey } from '../../entity/apiKey';
 
-export const createMockUser = () => {
-	const AccountRepo = getRepository(Account);
+import { AUTHORIZATION_LEVEL } from '../../constants';
 
-	const mockAccount = AccountRepo.create();
+export const createMockUser = () => {
+	const mockAccount = Account.create();
 	mockAccount.firstName = faker.name.firstName();
 	mockAccount.lastName = faker.name.lastName();
 	mockAccount.email = faker.internet.email(mockAccount.firstName, mockAccount.lastName);
 	mockAccount.password = faker.internet.password(10);
-	mockAccount.role = 1;
+	mockAccount.role = AUTHORIZATION_LEVEL.MEMBER;
 
 	return mockAccount;
 };
 
-export const saveMockUser = async (account: Account) => {
-	const AccountRepo = getRepository(Account);
-
-	return AccountRepo.save(account);
+export const saveMockUser = (account: Account) => {
+	return account.save();
 };
 
 export const deleteMockUser = async (account: Account) => {

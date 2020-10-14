@@ -1,15 +1,13 @@
 import { Request, Response } from 'express';
 import { DeepPartial, getRepository } from 'typeorm';
+import * as _ from 'lodash';
 
 import { Post } from '../../entity/post';
 import { Account } from '../../entity/account';
-import { parseMarkdown } from '../../utils/remark';
 
 export default {
 	getPosts: async (req: Request, res: Response) => {
-		const PostRepo = getRepository(Post);
-
-		const posts = await PostRepo.find({
+		const posts = await Post.find({
 			relations: ['attachment', 'owner'],
 		});
 		try {
@@ -48,30 +46,24 @@ export default {
 		}
 	},
 	createPost: async (req: Request, res: Response) => {
-		const AccountRepo = getRepository(Account);
-		const PostRepo = getRepository(Post);
 		const user = req.user as Account;
 
 		try {
 			const contentMD: string = req.body.content;
-			const contentHTML: string = parseMarkdown(contentMD);
 			delete req.body.content;
 
-			const newPost = PostRepo.create(req.body as DeepPartial<Post>);
+			const newPost = Post.create(req.body as DeepPartial<Post>);
+			newPost.content_markdown = contentMD;
 
-			const savedPost = await PostRepo.save({
-				...newPost,
-				content_markdown: contentMD,
-				content_html: contentHTML,
-			});
+			await newPost.save();
 
-			user.posts.push(savedPost);
+			user.posts.push(newPost);
 
-			await AccountRepo.save(user);
+			await user.save();
 
 			res.status(201).json({
 				ok: true,
-				post: savedPost,
+				post: newPost,
 			});
 		} catch (e) {
 			console.error(e);
@@ -84,25 +76,30 @@ export default {
 	},
 	updatePost: async (req: Request, res: Response) => {
 		const postID = req.params.id;
-		const PostRepo = getRepository(Post);
 
 		try {
 			const toUpdate: DeepPartial<Post> = req.body;
 
 			if (req.body.content) {
 				toUpdate.content_markdown = req.body.content;
-				toUpdate.content_html = parseMarkdown(req.body.content);
 
 				delete req.body.content;
 			}
+			const postToUpdate = await Post.findOne(postID);
 
-			await PostRepo.update(postID, toUpdate);
+			if (!postToUpdate)
+				return res.status(400).json({
+					ok: false,
+					message: 'Post not found',
+				});
 
-			const updatedPost = await PostRepo.findOne(postID);
+			_.assign(postToUpdate, toUpdate);
+
+			await postToUpdate.save();
 
 			res.status(200).json({
 				ok: true,
-				post: updatedPost,
+				post: postToUpdate,
 			});
 		} catch (e) {
 			console.error(e);

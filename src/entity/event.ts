@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity } from 'typeorm';
 
 import { Location } from './location';
 
 @Entity('event')
-export class Event {
+export class Event extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -25,7 +25,6 @@ export class Event {
 	date: Date;
 
 	@OneToOne(type => Location)
-	@JoinColumn()
 	location: Location;
 
 	@Column('varchar', {

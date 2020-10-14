@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, RelationId } from 'typeorm';
 import { Post } from './post';
 
 @Entity('attachment')
-export class Attachment {
+export class Attachment extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -20,4 +20,7 @@ export class Attachment {
 
 	@ManyToOne(type => Post)
 	post: Post;
+
+	@RelationId((attachment: Attachment) => attachment.post)
+	postId: string;
 }

@@ -1,18 +1,27 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, CreateDateColumn } from 'typeorm';
+import {
+	Entity,
+	Column,
+	PrimaryGeneratedColumn,
+	OneToOne,
+	CreateDateColumn,
+	BaseEntity,
+} from 'typeorm';
 
 import { Account } from './account';
 import { API_KEY_CALL_LIMIT } from '../constants';
 import { Values } from '../types';
 
 @Entity('api_key')
-export class ApiKey {
+export class ApiKey extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
 	@OneToOne(type => Account, owner => owner.apiKey)
 	owner: Account;
 
-	@Column('int', {
+	@Column({
+		type: 'enum',
+		enum: API_KEY_CALL_LIMIT,
 		default: API_KEY_CALL_LIMIT.MEMBER,
 		name: 'remaining_montly_call',
 	})

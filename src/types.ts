@@ -1,9 +1,7 @@
 export namespace Auhorization {
 	export type Tiers = 'MEMBER' | 'DONATOR' | 'MODERATOR' | 'DEVELOPER' | 'ADMIN';
 
-	export type Constants<T> = {
-		[key in Tiers]: T;
-	};
+	export type Constants<T> = Record<Tiers, T>;
 }
 
 export namespace Contributors {
