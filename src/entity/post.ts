@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, BaseEntity } from 'typeorm';
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	ManyToOne,
+	OneToMany,
+	BaseEntity,
+	RelationId,
+} from 'typeorm';
+
 import { Account } from './account';
 import { Attachment } from './attachment';
 
@@ -13,6 +22,9 @@ export class Post extends BaseEntity {
 	title: string;
 
 	@Column('varchar')
+	content: string;
+
+	@Column('varchar')
 	content_html: string;
 
 	@Column('varchar')
@@ -23,4 +35,7 @@ export class Post extends BaseEntity {
 
 	@OneToMany(type => Attachment, attachment => attachment.post)
 	attachment: Attachment[];
+
+	@RelationId((post: Post) => post.owner)
+	ownerId: string;
 }

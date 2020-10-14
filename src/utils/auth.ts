@@ -30,17 +30,14 @@ export const hashPassword = async (password: string) => {
 export const associateApiKeyToAccount = async (account: Account) => {
 	const userAuthLevel = getAuthLevel(account);
 
-	const AccountRepo = getRepository(Account);
-	const ApiKeyRepo = getRepository(ApiKey);
-
-	const apiKey = new ApiKey();
+	const apiKey = ApiKey.create();
 	apiKey.remainingMontlyCall = API_KEY_CALL_LIMIT[userAuthLevel];
 
-	await ApiKeyRepo.save(apiKey);
+	await apiKey.save();
 
 	account.apiKey = apiKey;
 
-	await AccountRepo.save(account);
+	await account.save();
 
 	return apiKey;
 };

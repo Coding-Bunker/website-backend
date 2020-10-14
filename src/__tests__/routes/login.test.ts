@@ -1,6 +1,7 @@
 import supertest from 'supertest';
 import * as faker from 'faker';
 import { verify } from 'jsonwebtoken';
+import * as _ from 'lodash';
 
 import app from '../../app';
 import { createDbConnection, closeDbConnection } from '../../db';
@@ -18,13 +19,13 @@ describe('Routes - /auth/login', () => {
 		try {
 			await createDbConnection();
 
-			mockUser = createMockUser();
-			const hashedPw = await hashPassword(mockUser.password);
+			mockSavedUser = createMockUser();
+			mockUser = _.cloneDeep(mockSavedUser);
 
-			mockSavedUser = await saveMockUser({
-				...mockUser,
-				password: hashedPw,
-			});
+			const hashedPw = await hashPassword(mockUser.password);
+			mockSavedUser.password = hashedPw;
+
+			await saveMockUser(mockSavedUser);
 
 			done();
 		} catch (e) {
@@ -63,6 +64,7 @@ describe('Routes - /auth/login', () => {
 		} catch (e) {
 			done.fail(e.message);
 		}
+
 		done();
 	});
 

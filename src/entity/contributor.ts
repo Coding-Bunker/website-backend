@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
-import { Account } from './account';
 import { Contributors } from '../types';
 
 @Entity('contributor')

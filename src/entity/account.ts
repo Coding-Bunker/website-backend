@@ -4,9 +4,10 @@ import {
 	Column,
 	OneToMany,
 	OneToOne,
-	JoinColumn,
 	CreateDateColumn,
 	BaseEntity,
+	JoinColumn,
+	RelationId,
 } from 'typeorm';
 
 import { ApiKey } from './apiKey';
@@ -19,8 +20,10 @@ export class Account extends BaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
-	@Column('int', {
-		default: 0,
+	@Column({
+		type: 'enum',
+		enum: AUTHORIZATION_LEVEL,
+		default: AUTHORIZATION_LEVEL.MEMBER,
 	})
 	role: Values<typeof AUTHORIZATION_LEVEL>;
 
@@ -60,13 +63,14 @@ export class Account extends BaseEntity {
 	@OneToOne(type => ApiKey, apiKey => apiKey.owner, {
 		nullable: true,
 	})
-	@JoinColumn({
-		name: 'api_key_id',
-	})
+	@JoinColumn()
 	apiKey: ApiKey;
 
 	@CreateDateColumn({
 		name: 'created_at',
 	})
 	createdAt: Date;
+
+	@Column({ nullable: true })
+	apiKeyId: string;
 }

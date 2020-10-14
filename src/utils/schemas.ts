@@ -15,15 +15,52 @@ export const userSchema = Yup.object().shape({
 	password: Yup.string().min(6, 'Min 6 characters').max(18, 'Max 18 characters'),
 	firstName: Yup.string(),
 	lastName: Yup.string(),
-	role: Yup.number()
-		.min(
-			AUTHORIZATION_LEVEL.MEMBER,
-			`Role has to be beetwen ${AUTHORIZATION_LEVEL.MEMBER} and ${AUTHORIZATION_LEVEL.ADMIN}`,
-		)
-		.max(
-			AUTHORIZATION_LEVEL.ADMIN,
-			`Role has to be beetwen ${AUTHORIZATION_LEVEL.MEMBER} and ${AUTHORIZATION_LEVEL.ADMIN}`,
-		),
+	role: Yup.string().oneOf([
+		AUTHORIZATION_LEVEL.ADMIN,
+		AUTHORIZATION_LEVEL.MODERATOR,
+		AUTHORIZATION_LEVEL.DEVELOPER,
+		AUTHORIZATION_LEVEL.DONATOR,
+		AUTHORIZATION_LEVEL.MEMBER,
+	]),
+});
+
+export const postSchema = Yup.object().shape({
+	title: Yup.string().min(10, 'Min 10 characters').max(100, 'Max 100 characters'),
+	content_html: Yup.string(),
+	content_markdown: Yup.string(),
+	owner: Yup.string(),
+	attachment: Yup.string(),
+});
+
+export const contributorSchema = Yup.object().shape({
+	money: Yup.string().min(0, 'Has to be major or equal to 0'),
+	role: Yup.number(),
+	date: Yup.date(),
+});
+
+export const locationSchema = Yup.object().shape({
+	lat: Yup.number(),
+	long: Yup.number(),
+});
+
+export const eventSchema = Yup.object().shape({
+	name: Yup.string().min(10, 'Min 10 characters').max(100, 'Max 100 characters'),
+	description: Yup.string().max(250, 'Max 250 characters'),
+	date: Yup.date(),
+	location: Yup.string(),
+	link: Yup.string().max(256, 'Max 256 characters'),
+});
+
+export const projectSchema = Yup.object().shape({
+	name: Yup.string().min(10, 'Min 10 characters').max(100, 'Max 100 characters'),
+	description: Yup.string().max(250, 'Max 250 characters'),
+	date: Yup.date(),
+});
+
+export const attachmentSchema = Yup.object().shape({
+	name: Yup.string().max(100, 'Max 50 characters'),
+	url: Yup.string().max(512, 'Max 512 characters'),
+	post: Yup.string(),
 });
 
 export const everyFieldRequiredSchema = (schema: Yup.ObjectSchema<any>) =>

@@ -4,7 +4,7 @@ module.exports = {
 	name: 'default',
 	type: 'postgres',
 
-	url: process.env.DB_URI,
+	url: process.env.NODE_ENV === 'test' ? process.env.DB_TEST_URL : process.env.DB_URL,
 
 	ssl: {
 		rejectUnauthorized: false,
@@ -13,9 +13,11 @@ module.exports = {
 	synchronize: true,
 	logging: false,
 
-	entities: ['src/entity/**/*.ts', 'dist/entity/**/.js'],
-	subscribers: ['src/subscriber/**/*.ts', 'dist/subscriber/**/*.js'],
-	migrations: ['src/migration/**/*.ts', 'dist/migration/**/*.js'],
+	entities: process.env.NODE_ENV === 'production' ? ['dist/entity/**/.js'] : ['src/entity/**/*.ts'],
+	subscribers:
+		process.env.NODE_ENV === 'production' ? ['dist/subscriber/**/.js'] : ['src/subscriber/**/*.ts'],
+	migrations:
+		process.env.NODE_ENV === 'production' ? ['dist/migration/**/.js'] : ['src/migration/**/*.ts'],
 	cli: {
 		entitiesDir: 'dist/entity',
 		migrationsDir: 'dist/migration',

@@ -1,23 +1,28 @@
-// TODO: Install Winston logger setup it and create/use a transporter to log data in db and stdout
 import * as winston from 'winston';
+import { Format } from 'logform';
 import chalk from 'chalk';
 
 import { Log } from '../types';
 
+const formats: Format[] = [
+	winston.format.timestamp({
+		format: 'YYYY-MM-DD hh:mm:ss.SSS',
+	}),
+];
+
+if (__DEV__) formats.push(winston.format.colorize());
+formats.push(
+	winston.format.printf(
+		({ level, message, timestamp, label }) =>
+			`${__DEV__ ? chalk.blue(timestamp) : timestamp} ${__DEV__ ? chalk.bold(level) : level} ${
+				(label && __DEV__ ? chalk.cyan(`[${label}] `) : `[${label}] `) || ''
+			}${message}`,
+	),
+);
+
 const logger = winston.createLogger({
 	level: __DEV__ ? 'debug' : 'info',
-	format: winston.format.combine(
-		winston.format.timestamp({
-			format: 'YYYY-MM-DD hh:mm:ss.SSS',
-		}),
-		winston.format.colorize(),
-		winston.format.printf(
-			({ level, message, timestamp, label }) =>
-				`${chalk.blue(timestamp)} ${chalk.bold(level)} ${
-					(label && chalk.cyan(`[${label}] `)) || ''
-				}${message}`,
-		),
-	),
+	format: winston.format.combine.apply(winston.format.combine, formats),
 	transports: [new winston.transports.Console()],
 });
 
