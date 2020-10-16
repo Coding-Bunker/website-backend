@@ -1,16 +1,15 @@
+import * as _ from 'lodash';
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
 import { Event } from '../../entity/event';
 
 export default {
 	getEvents: async (req: Request, res: Response) => {
-		const EventRepo = getRepository(Event);
-
-		const events = await EventRepo.find({
-			relations: ['location'],
-		});
 		try {
+			const events = await Event.find({
+				relations: ['location'],
+			});
+
 			res.status(200).json({
 				events,
 			});
@@ -26,10 +25,8 @@ export default {
 	getEvent: async (req: Request, res: Response) => {
 		const eventID = req.params.id;
 
-		const EventRepo = getRepository(Event);
-
 		try {
-			const event = await EventRepo.findOne(eventID, {
+			const event = await Event.findOne(eventID, {
 				relations: ['location'],
 			});
 
@@ -46,14 +43,12 @@ export default {
 		}
 	},
 	createEvent: async (req: Request, res: Response) => {
-		const EventRepo = getRepository(Event);
-
 		try {
-			const newEvent = EventRepo.create({
-				...req.body,
+			const newEvent = Event.create({
+				...(req.body as Partial<Event>),
 			});
 
-			await EventRepo.insert(newEvent);
+			await newEvent.save();
 
 			res.status(201).json({
 				ok: true,
@@ -70,16 +65,23 @@ export default {
 	},
 	updateEvent: async (req: Request, res: Response) => {
 		const eventID = req.params.id; // It exists because it passed trough the middleware
-		const EventRepo = getRepository(Event);
 
 		try {
-			await EventRepo.update(eventID, req.body);
+			const eventToUpdate = await Event.findOne(eventID);
 
-			const updatedEvent = await EventRepo.findOne(eventID);
+			if (!eventToUpdate)
+				return res.status(400).json({
+					ok: false,
+					message: 'Event not found',
+				});
+
+			_.assign(req.body, eventToUpdate);
+
+			await eventToUpdate.save();
 
 			res.status(200).json({
 				ok: true,
-				event: updatedEvent,
+				event: eventToUpdate,
 			});
 		} catch (e) {
 			console.error(e);
@@ -92,10 +94,8 @@ export default {
 	},
 	deleteEvent: async (req: Request, res: Response) => {
 		const eventID = req.params.id;
-		const EventRepo = getRepository(Event);
-
 		try {
-			await EventRepo.delete(eventID);
+			await Event.delete(eventID);
 
 			res.status(200).json({
 				ok: true,

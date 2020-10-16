@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { DeepPartial, getRepository } from 'typeorm';
 import * as _ from 'lodash';
 
 import { Post } from '../../entity/post';
@@ -7,10 +6,11 @@ import { Account } from '../../entity/account';
 
 export default {
 	getPosts: async (req: Request, res: Response) => {
-		const posts = await Post.find({
-			relations: ['attachment', 'owner'],
-		});
 		try {
+			const posts = await Post.find({
+				relations: ['attachment', 'owner'],
+			});
+
 			res.status(200).json({
 				posts,
 			});
@@ -26,10 +26,8 @@ export default {
 	getPost: async (req: Request, res: Response) => {
 		const postID = req.params.id;
 
-		const PostRepo = getRepository(Post);
-
 		try {
-			const post = await PostRepo.findOne(postID, {
+			const post = await Post.findOne(postID, {
 				relations: ['attachment', 'owner'],
 			});
 
@@ -52,7 +50,7 @@ export default {
 			const contentMD: string = req.body.content;
 			delete req.body.content;
 
-			const newPost = Post.create(req.body as DeepPartial<Post>);
+			const newPost = Post.create(req.body as Partial<Post>);
 			newPost.content_markdown = contentMD;
 
 			await newPost.save();
@@ -78,7 +76,7 @@ export default {
 		const postID = req.params.id;
 
 		try {
-			const toUpdate: DeepPartial<Post> = req.body;
+			const toUpdate: Partial<Post> = req.body;
 
 			if (req.body.content) {
 				toUpdate.content_markdown = req.body.content;
@@ -112,10 +110,8 @@ export default {
 	},
 	deletePost: async (req: Request, res: Response) => {
 		const postID = req.params.id;
-		const PostRepo = getRepository(Post);
-
 		try {
-			await PostRepo.delete(postID);
+			await Post.delete(postID);
 
 			res.status(200).json({
 				ok: true,

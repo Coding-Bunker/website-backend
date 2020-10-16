@@ -1,15 +1,12 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
 import { Account } from '../../entity/account';
 import { hashPassword } from '../../utils/auth';
 
 export default {
 	getUsers: async (req: Request, res: Response) => {
-		const AccountRepo = getRepository(Account);
-
 		try {
-			const accounts = await AccountRepo.find({
+			const accounts = await Account.find({
 				relations: ['apiKey', 'posts'],
 			});
 
@@ -28,10 +25,8 @@ export default {
 	getUser: async (req: Request, res: Response) => {
 		const userID = req.params.id; // It exists because it passed trough the middleware
 
-		const AccountRepo = getRepository(Account);
-
 		try {
-			const account = await AccountRepo.findOne(userID, {
+			const account = await Account.findOne(userID, {
 				relations: ['apiKey', 'posts'],
 			});
 
@@ -48,16 +43,14 @@ export default {
 		}
 	},
 	createUser: async (req: Request, res: Response) => {
-		const AccountRepo = getRepository(Account);
-
 		try {
 			const hash = await hashPassword(req.body.password);
-			const newAccount = AccountRepo.create({
-				...req.body,
+			const newAccount = Account.create({
+				...(req.body as Partial<Account>),
 				password: hash,
 			});
 
-			await AccountRepo.insert(newAccount);
+			await newAccount.save();
 
 			res.status(201).json({
 				ok: true,
@@ -74,16 +67,19 @@ export default {
 	},
 	updateUser: async (req: Request, res: Response) => {
 		const userID = req.params.id; // It exists because it passed trough the middleware
-		const AccountRepo = getRepository(Account);
 
 		try {
-			await AccountRepo.update(userID, req.body);
+			const accountToUpdate = await Account.findOne(userID);
 
-			const updatedAccount = await AccountRepo.findOne(userID);
+			if (!accountToUpdate)
+				return res.status(400).json({
+					ok: false,
+					message: 'User not found',
+				});
 
 			res.status(200).json({
 				ok: true,
-				account: updatedAccount,
+				account: accountToUpdate,
 			});
 		} catch (e) {
 			console.error(e);
@@ -96,10 +92,9 @@ export default {
 	},
 	deleteUser: async (req: Request, res: Response) => {
 		const userID = req.params.id; // It exists because it passed trough the middleware
-		const AccountRepo = getRepository(Account);
 
 		try {
-			await AccountRepo.delete(userID);
+			await Account.delete(userID);
 
 			res.status(200).json({
 				ok: true,

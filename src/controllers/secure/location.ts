@@ -1,15 +1,12 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
 import { Location } from '../../entity/location';
 
 export default {
 	getLocations: async (req: Request, res: Response) => {
-		const LocationRepo = getRepository(Location);
-
-		const locations = await LocationRepo.find();
-
 		try {
+			const locations = await Location.find();
+
 			res.status(200).json({
 				locations,
 			});
@@ -25,10 +22,8 @@ export default {
 	getLocation: async (req: Request, res: Response) => {
 		const locationID = req.params.id;
 
-		const LocationRepo = getRepository(Location);
-
 		try {
-			const location = await LocationRepo.findOne(locationID);
+			const location = await Location.findOne(locationID);
 
 			return res.status(200).json({
 				location,
@@ -43,14 +38,12 @@ export default {
 		}
 	},
 	createLocation: async (req: Request, res: Response) => {
-		const LocationRepo = getRepository(Location);
-
 		try {
-			const newLocation = LocationRepo.create({
+			const newLocation = Location.create({
 				...req.body,
 			});
 
-			await LocationRepo.insert(newLocation);
+			await Location.insert(newLocation);
 
 			res.status(201).json({
 				ok: true,
@@ -67,16 +60,21 @@ export default {
 	},
 	updateLocation: async (req: Request, res: Response) => {
 		const locationID = req.params.id;
-		const LocationRepo = getRepository(Location);
 
 		try {
-			await LocationRepo.update(locationID, req.body);
+			const locationToUpdate = await Location.findOne(locationID);
 
-			const updatedLocation = await LocationRepo.findOne(locationID);
+			if (!locationToUpdate)
+				return res.status(400).json({
+					ok: false,
+					message: 'Location not found',
+				});
+
+			await locationToUpdate.save();
 
 			res.status(200).json({
 				ok: true,
-				post: updatedLocation,
+				post: locationToUpdate,
 			});
 		} catch (e) {
 			console.error(e);
@@ -89,10 +87,8 @@ export default {
 	},
 	deleteLocation: async (req: Request, res: Response) => {
 		const locationID = req.params.id;
-		const LocationRepo = getRepository(Location);
-
 		try {
-			await LocationRepo.delete(locationID);
+			await Location.delete(locationID);
 
 			res.status(200).json({
 				ok: true,

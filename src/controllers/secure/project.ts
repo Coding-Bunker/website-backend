@@ -1,15 +1,12 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
 import { Project } from '../../entity/project';
 
 export default {
 	getProjects: async (req: Request, res: Response) => {
-		const ProjectRepo = getRepository(Project);
-
-		const projects = await ProjectRepo.find();
-
 		try {
+			const projects = await Project.find();
+
 			res.status(200).json({
 				projects,
 			});
@@ -25,10 +22,8 @@ export default {
 	getProject: async (req: Request, res: Response) => {
 		const projectID = req.params.id;
 
-		const ProjectRepo = getRepository(Project);
-
 		try {
-			const project = await ProjectRepo.findOne(projectID);
+			const project = await Project.findOne(projectID);
 
 			return res.status(200).json({
 				project,
@@ -43,14 +38,12 @@ export default {
 		}
 	},
 	createProject: async (req: Request, res: Response) => {
-		const ProjectRepo = getRepository(Project);
-
 		try {
-			const newProject = ProjectRepo.create({
-				...req.body,
+			const newProject = Project.create({
+				...(req.body as Partial<Project>),
 			});
 
-			await ProjectRepo.insert(newProject);
+			await newProject.save();
 
 			res.status(201).json({
 				ok: true,
@@ -67,16 +60,21 @@ export default {
 	},
 	updateProject: async (req: Request, res: Response) => {
 		const projectID = req.params.id;
-		const ProjectRepo = getRepository(Project);
 
 		try {
-			await ProjectRepo.update(projectID, req.body);
+			const projectToUpdate = await Project.findOne(projectID);
 
-			const updatedProject = await ProjectRepo.findOne(projectID);
+			if (!projectToUpdate)
+				return res.status(400).json({
+					ok: false,
+					message: 'Project not found',
+				});
+
+			await projectToUpdate.save();
 
 			res.status(200).json({
 				ok: true,
-				project: updatedProject,
+				project: projectToUpdate,
 			});
 		} catch (e) {
 			console.error(e);
@@ -89,10 +87,9 @@ export default {
 	},
 	deleteProject: async (req: Request, res: Response) => {
 		const projectID = req.params.id;
-		const ProjectRepo = getRepository(Project);
 
 		try {
-			await ProjectRepo.delete(projectID);
+			await Project.delete(projectID);
 
 			res.status(200).json({
 				ok: true,

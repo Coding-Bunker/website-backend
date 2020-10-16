@@ -1,15 +1,13 @@
+import * as _ from 'lodash';
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
 
 import { Contributor } from '../../entity/contributor';
 
 export default {
 	getContributors: async (req: Request, res: Response) => {
-		const ContributorRepo = getRepository(Contributor);
-
-		const contributors = await ContributorRepo.find();
-
 		try {
+			const contributors = await Contributor.find();
+
 			res.status(200).json({
 				contributors,
 			});
@@ -25,10 +23,8 @@ export default {
 	getContributor: async (req: Request, res: Response) => {
 		const contributorID = req.params.id;
 
-		const ContributorRepo = getRepository(Contributor);
-
 		try {
-			const contributor = await ContributorRepo.findOne(contributorID);
+			const contributor = await Contributor.findOne(contributorID);
 
 			return res.status(200).json({
 				contributor,
@@ -43,14 +39,12 @@ export default {
 		}
 	},
 	createContributor: async (req: Request, res: Response) => {
-		const ContributorRepo = getRepository(Contributor);
-
 		try {
-			const newContributor = ContributorRepo.create({
-				...req.body,
+			const newContributor = Contributor.create({
+				...(req.body as Partial<Contributor>),
 			});
 
-			await ContributorRepo.insert(newContributor);
+			await newContributor.save();
 
 			res.status(201).json({
 				ok: true,
@@ -67,16 +61,22 @@ export default {
 	},
 	updateContributor: async (req: Request, res: Response) => {
 		const contributorID = req.params.id;
-		const ContributorRepo = getRepository(Contributor);
 
 		try {
-			await ContributorRepo.update(contributorID, req.body);
+			const contributorToUpdate = await Contributor.findOne(contributorID);
 
-			const updatedContributor = await ContributorRepo.findOne(contributorID);
+			if (!contributorToUpdate)
+				return res.status(400).json({
+					ok: false,
+					message: 'Contributor does not exists',
+				});
+
+			_.assign(req.body, contributorToUpdate);
+			await contributorToUpdate.save();
 
 			res.status(200).json({
 				ok: true,
-				project: updatedContributor,
+				project: contributorToUpdate,
 			});
 		} catch (e) {
 			console.error(e);
@@ -89,10 +89,9 @@ export default {
 	},
 	deleteContributor: async (req: Request, res: Response) => {
 		const contributorID = req.params.id;
-		const ContributorRepo = getRepository(Contributor);
 
 		try {
-			await ContributorRepo.delete(contributorID);
+			await Contributor.delete(contributorID);
 
 			res.status(200).json({
 				ok: true,
