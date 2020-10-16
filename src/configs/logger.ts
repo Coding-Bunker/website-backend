@@ -2,6 +2,8 @@ import * as winston from 'winston';
 import { Format } from 'logform';
 import chalk from 'chalk';
 
+import './env';
+
 import { Log } from '../types';
 
 const formats: Format[] = [
