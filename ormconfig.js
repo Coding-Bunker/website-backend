@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 module.exports = {
 	name: 'default',
 	type: 'postgres',
@@ -13,11 +11,14 @@ module.exports = {
 	synchronize: true,
 	logging: false,
 
-	entities: process.env.NODE_ENV === 'production' ? ['dist/entity/**/.js'] : ['src/entity/**/*.ts'],
+	entities:
+		process.env.NODE_ENV === 'production' ? ['dist/entity/**/*.js'] : ['src/entity/**/*.ts'],
 	subscribers:
-		process.env.NODE_ENV === 'production' ? ['dist/subscriber/**/.js'] : ['src/subscriber/**/*.ts'],
+		process.env.NODE_ENV === 'production'
+			? ['dist/subscriber/**/*.js']
+			: ['src/subscriber/**/*.ts'],
 	migrations:
-		process.env.NODE_ENV === 'production' ? ['dist/migration/**/.js'] : ['src/migration/**/*.ts'],
+		process.env.NODE_ENV === 'production' ? ['dist/migration/**/*.js'] : ['src/migration/**/*.ts'],
 	cli: {
 		entitiesDir: 'dist/entity',
 		migrationsDir: 'dist/migration',

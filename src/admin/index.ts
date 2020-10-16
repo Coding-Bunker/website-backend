@@ -1,6 +1,7 @@
 import AdminBro, { ResourceWithOptions, After, RecordActionResponse } from 'admin-bro';
 import { buildRouter } from '@admin-bro/express';
 import * as TypeormAdapter from '@admin-bro/typeorm';
+import { Connection } from 'typeorm';
 
 // Entities
 import { Account } from '../entity/account';
@@ -23,7 +24,7 @@ const parent = {
 	name: 'Database',
 };
 
-export const init = () => {
+export const init = (connection: Connection) => {
 	const adminPro = new AdminBro({
 		rootPath: '/admin',
 		resources: [
@@ -35,7 +36,7 @@ export const init = () => {
 							actionType: 'record',
 							icon: 'Api_1',
 							component: false,
-							isVisible: ctx => !ctx.record?.param('apiKeyId'),
+							isVisible: ctx => !ctx.record?.get('apiKeyId'),
 							handler: createApiKeyAction,
 						},
 						delete: {

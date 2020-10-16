@@ -1,6 +1,8 @@
 import 'dotenv-safe/config';
 import 'reflect-metadata';
 
+import { Connection } from 'typeorm';
+
 import './types';
 
 import restService from './app';
@@ -14,9 +16,10 @@ const port = process.env.PORT || 8080;
 
 (async () => {
 	let app;
+	let connection: Connection;
 
 	try {
-		await createDbConnection();
+		connection = await createDbConnection();
 		logger.info({
 			label: 'DB',
 			message: 'Connection instaurated',
@@ -31,7 +34,7 @@ const port = process.env.PORT || 8080;
 	}
 
 	try {
-		const { admin, router } = Admin.init();
+		const { admin, router } = Admin.init(connection);
 
 		app = express();
 		app.use(admin.options.rootPath, router);
@@ -41,7 +44,7 @@ const port = process.env.PORT || 8080;
 	} catch (e) {
 		logger.error({
 			label: 'SERVER',
-			message: e.message,
+			message: e,
 		});
 
 		process.exit(1);
