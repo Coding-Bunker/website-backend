@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
-import { getRepository } from 'typeorm';
 import logger from '../configs/logger';
 
 import { AUTHORIZATION_LEVEL } from '../constants';

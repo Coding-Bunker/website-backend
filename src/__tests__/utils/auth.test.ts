@@ -23,6 +23,7 @@ describe('Utils - Auth', () => {
 		};
 		const mockToken =
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.RleytVilYY9Lq-8qNFZpfl_3M_cpaOOT3DNCzAoN92c';
+
 		it('Works', () => {
 			sendRefreshToken(responseMock as any, mockToken);
 
