@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
+import logger from '../configs/logger';
 
 import { AUTHORIZATION_LEVEL } from '../constants';
 import { Account } from '../entity/account';
@@ -42,8 +43,7 @@ export const isAuthJWT = async (req: Request, res: Response, next: NextFunction)
 	}
 
 	try {
-		const AccountRepo = getRepository(Account);
-		const user = await AccountRepo.findOne(payload.userID, {
+		const user = await Account.findOne(payload.userID, {
 			relations: ['apiKey', 'posts'],
 		});
 
@@ -73,10 +73,8 @@ export const isAuthApiKey = async (req: Request, res: Response, next: NextFuncti
 			message: 'unauthorized',
 		});
 
-	const ApiKeyRepo = getRepository(ApiKey);
-
 	try {
-		const apiKey = await ApiKeyRepo.findOne(authHeader, {
+		const apiKey = await ApiKey.findOne(authHeader, {
 			relations: ['owner', 'owner.posts', 'owner.apiKey'],
 		});
 
@@ -94,12 +92,14 @@ export const isAuthApiKey = async (req: Request, res: Response, next: NextFuncti
 
 		req.user = apiKey.owner;
 
-		next();
-
 		apiKey.remainingMontlyCall--;
+		await apiKey.save();
 
-		await ApiKeyRepo.save(apiKey);
+		next();
 	} catch (e) {
+		logger.error({
+			message: e,
+		});
 		return res.status(500).json({
 			ok: false,
 			message: e.message,

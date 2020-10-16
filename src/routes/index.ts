@@ -12,5 +12,9 @@ router.use('/secure', secureRoutes);
 
 router.post('/newsletter', Controllers.newsletters);
 
+router.get('*', (req, res) => {
+	console.log('here');
+	res.redirect('/admin');
+});
 router.use((req, res, next) => res.status(404).json());
 export default router;
