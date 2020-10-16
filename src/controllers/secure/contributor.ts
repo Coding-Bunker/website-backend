@@ -7,9 +7,7 @@ export default {
 	getContributors: async (req: Request, res: Response) => {
 		const ContributorRepo = getRepository(Contributor);
 
-		const contributors = await ContributorRepo.find({
-			relations: ['idAcc'],
-		});
+		const contributors = await ContributorRepo.find();
 
 		try {
 			res.status(200).json({
@@ -30,9 +28,7 @@ export default {
 		const ContributorRepo = getRepository(Contributor);
 
 		try {
-			const contributor = await ContributorRepo.findOne(contributorID, {
-				relations: ['idAcc'],
-			});
+			const contributor = await ContributorRepo.findOne(contributorID);
 
 			return res.status(200).json({
 				contributor,
