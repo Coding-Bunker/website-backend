@@ -133,7 +133,6 @@ export const init = (connection: Connection) => {
 		branding: {
 			companyName: 'Coding Bunker',
 			softwareBrothers: false,
-			theme,
 		},
 	});
 

@@ -20,8 +20,7 @@ export class ApiKey extends BaseEntity {
 	owner: Account;
 
 	@Column({
-		type: 'enum',
-		enum: API_KEY_CALL_LIMIT,
+		type: 'int',
 		default: API_KEY_CALL_LIMIT.MEMBER,
 		name: 'remaining_montly_call',
 	})
