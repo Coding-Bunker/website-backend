@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, JoinColumn } from 'typeorm';
 
 import { Location } from './location';
 
@@ -25,6 +25,7 @@ export class Event extends BaseEntity {
 	date: Date;
 
 	@OneToOne(type => Location)
+	@JoinColumn()
 	location: Location;
 
 	@Column('varchar', {
