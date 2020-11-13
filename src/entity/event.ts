@@ -33,4 +33,7 @@ export class Event extends BaseEntity {
 		nullable: false,
 	})
 	link: string;
+
+	@Column({ nullable: true })
+	locationId: string;
 }

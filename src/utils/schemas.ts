@@ -39,6 +39,7 @@ export const contributorSchema = Yup.object().shape({
 });
 
 export const locationSchema = Yup.object().shape({
+	name: Yup.string().max(50, 'Max 50 words'),
 	lat: Yup.number(),
 	long: Yup.number(),
 });

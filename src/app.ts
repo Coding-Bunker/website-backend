@@ -33,5 +33,8 @@ if (__DEV__) {
 
 // Routes
 app.use('/api/v1', routes);
+app.use((req, res) => {
+	res.redirect('/admin');
+});
 
 export default app;

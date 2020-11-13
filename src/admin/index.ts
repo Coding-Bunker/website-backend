@@ -36,7 +36,7 @@ export const init = (connection: Connection) => {
 							actionType: 'record',
 							icon: 'Api_1',
 							component: false,
-							isVisible: ctx => !ctx.record?.get('apiKeyId'),
+							isVisible: ctx => !ctx.record?.param('apiKeyId'),
 							handler: createApiKeyAction,
 						},
 						delete: {
@@ -109,6 +109,11 @@ export const init = (connection: Connection) => {
 			{
 				resource: Location,
 				options: {
+					properties: {
+						name: {
+							isTitle: true,
+						},
+					},
 					parent,
 				},
 			},
@@ -117,7 +122,10 @@ export const init = (connection: Connection) => {
 				options: {
 					properties: {
 						content: {
-							type: 'richtext',
+							type: 'textarea',
+							/*components: {
+								edit: AdminBro.bundle('./components/postEdit'),
+							},*/
 						},
 					},
 					parent,
