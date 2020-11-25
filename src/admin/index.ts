@@ -16,6 +16,7 @@ import { Project } from '../entity/project';
 import { createApiKeyAction } from './actions';
 
 import theme from './theme';
+import { Language } from '../entity/language';
 
 AdminBro.registerAdapter(TypeormAdapter);
 
@@ -133,6 +134,12 @@ export const init = (connection: Connection) => {
 			},
 			{
 				resource: Project,
+				options: {
+					parent,
+				},
+			},
+			{
+				resource: Language,
 				options: {
 					parent,
 				},

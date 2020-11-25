@@ -5,10 +5,16 @@ export namespace Auhorization {
 }
 
 export namespace Contributors {
-	export enum Roles {
-		DONATOR = 'donator',
-		STAFF = 'staff',
-	}
+	export type Roles =
+		| 'ADMIN'
+		| 'CONTRIBUTOR'
+		| 'MODERATOR'
+		| 'MENTOR'
+		| 'SENIOR_MEMBER'
+		| 'MEMBER'
+		| 'JUNIOR_MEMBER';
+
+	export type Constants<T> = Record<Roles, T>;
 }
 
 export namespace Tokens {
