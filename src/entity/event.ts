@@ -1,9 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, BaseEntity, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
 
 import { Location } from './location';
 
 @Entity('event')
-export class Event extends BaseEntity {
+export class Event extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

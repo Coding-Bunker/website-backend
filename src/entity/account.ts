@@ -5,18 +5,18 @@ import {
 	OneToMany,
 	OneToOne,
 	CreateDateColumn,
-	BaseEntity,
 	JoinColumn,
-	RelationId,
 } from 'typeorm';
 
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
 import { ApiKey } from './apiKey';
 import { Post } from './post';
+
 import { AUTHORIZATION_LEVEL } from '../constants';
 import { Values } from '../types';
 
 @Entity('account')
-export class Account extends BaseEntity {
+export class Account extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

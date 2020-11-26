@@ -1,7 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
 
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
+
 @Entity()
-export class Location extends BaseEntity {
+export class Location extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

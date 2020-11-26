@@ -7,12 +7,15 @@ import {
 	BaseEntity,
 } from 'typeorm';
 
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
+
 import { Account } from './account';
+
 import { API_KEY_CALL_LIMIT } from '../constants';
 import { Values } from '../types';
 
 @Entity('api_key')
-export class ApiKey extends BaseEntity {
+export class ApiKey extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

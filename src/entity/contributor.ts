@@ -9,12 +9,15 @@ import {
 	JoinTable,
 } from 'typeorm';
 
-import { Contributors } from '../types';
-import { KIND_OF_CONTIBUTORS } from '../constants';
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
+
 import { Language } from './language';
 
+import { Contributors } from '../types';
+import { KIND_OF_CONTIBUTORS } from '../constants';
+
 @Entity('contributor')
-export class Contributor extends BaseEntity {
+export class Contributor extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -37,7 +40,9 @@ export class Contributor extends BaseEntity {
 	})
 	role: Contributors.Roles;
 
-	@ManyToMany(() => Language)
+	@ManyToMany(() => Language, {
+		cascade: true,
+	})
 	@JoinTable()
 	languages: Language[];
 

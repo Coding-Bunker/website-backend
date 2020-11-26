@@ -12,18 +12,21 @@ import { Event } from '../entity/event';
 import { Location } from '../entity/location';
 import { Post } from '../entity/post';
 import { Project } from '../entity/project';
-
-import { createApiKeyAction } from './actions';
-
-import theme from './theme';
 import { Language } from '../entity/language';
 
-AdminBro.registerAdapter(TypeormAdapter);
+import { createApiKeyAction } from './actions';
+import theme from './theme';
+import { Resource } from './ResourceManyToMany';
+import { makeManyToMany } from './property/ManyToMany.property';
+
+AdminBro.registerAdapter({ Database: TypeormAdapter.Database, Resource });
 
 const parent = {
 	icon: 'DataBase',
 	name: 'Database',
 };
+
+const ContributorLanguagesManyToMany = makeManyToMany('Language');
 
 export const init = (connection: Connection) => {
 	const adminPro = new AdminBro({
@@ -99,6 +102,12 @@ export const init = (connection: Connection) => {
 				resource: Contributor,
 				options: {
 					parent,
+					actions: {
+						...ContributorLanguagesManyToMany.Actions,
+					},
+					properties: {
+						languages: ContributorLanguagesManyToMany.Component,
+					},
 				},
 			},
 			{

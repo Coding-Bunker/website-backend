@@ -1,8 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity, RelationId } from 'typeorm';
+
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
+
 import { Post } from './post';
 
 @Entity('attachment')
-export class Attachment extends BaseEntity {
+export class Attachment extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 

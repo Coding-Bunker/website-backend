@@ -9,10 +9,10 @@ import {
 	JoinTable,
 } from 'typeorm';
 
-import { Contributor } from './contributor';
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
 
 @Entity('language')
-export class Language extends BaseEntity {
+export class Language extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
@@ -21,10 +21,4 @@ export class Language extends BaseEntity {
 		nullable: false,
 	})
 	name: string;
-
-	@ManyToMany(() => Contributor, category => category.languages, {
-		cascade: true,
-	})
-	@JoinTable()
-	categories: Contributor[];
 }

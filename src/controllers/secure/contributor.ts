@@ -6,7 +6,9 @@ import { Contributor } from '../../entity/contributor';
 export default {
 	getContributors: async (req: Request, res: Response) => {
 		try {
-			const contributors = await Contributor.find();
+			const contributors = await Contributor.find({
+				relations: ['languages'],
+			});
 
 			res.status(200).json({
 				contributors,

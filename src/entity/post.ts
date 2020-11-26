@@ -8,11 +8,13 @@ import {
 	RelationId,
 } from 'typeorm';
 
+import { AppBaseEntity } from '../repositories/AppBaseEntity';
+
 import { Account } from './account';
 import { Attachment } from './attachment';
 
 @Entity('post')
-export class Post extends BaseEntity {
+export class Post extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
