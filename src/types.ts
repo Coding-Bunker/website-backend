@@ -1,3 +1,5 @@
+import { LogLevel } from '@scout_apm/scout-apm/dist/lib/types';
+
 export namespace Auhorization {
 	export type Tiers = 'MEMBER' | 'DONATOR' | 'MODERATOR' | 'DEVELOPER' | 'ADMIN';
 
@@ -45,6 +47,9 @@ declare global {
 			JWT_ACCESS_TOKEN_SECRET: string;
 			JWT_REFRESH_TOKEN_SECRET: string;
 			NODE_ENV: 'development' | 'production' | 'testing';
+			SCOUT_KEY: string;
+			SCOUT_MONITOR: boolean;
+			SCOUT_LOG_LEVEL: LogLevel;
 		}
 		interface Global {
 			__DEV__: boolean;

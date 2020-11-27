@@ -22,7 +22,7 @@ formats.push(
 	),
 );
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
 	level: __DEV__ ? 'debug' : 'info',
 	format: winston.format.combine.apply(winston.format.combine, formats),
 	transports: [new winston.transports.Console()],
