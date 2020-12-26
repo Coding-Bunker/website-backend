@@ -7,3 +7,4 @@ export * from './language';
 export * from './location';
 export * from './post';
 export * from './project';
+export * from './speaker';

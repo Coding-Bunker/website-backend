@@ -17,7 +17,6 @@ export class Attachment extends AppBaseEntity {
 
 	@Column('varchar', {
 		nullable: false,
-		length: 512,
 	})
 	url: string;
 

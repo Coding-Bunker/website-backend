@@ -50,6 +50,7 @@ declare global {
 			SCOUT_KEY: string;
 			SCOUT_MONITOR: boolean;
 			SCOUT_LOG_LEVEL: LogLevel;
+			WORKFLOW_API_TOKEN: string;
 		}
 		interface Global {
 			__DEV__: boolean;

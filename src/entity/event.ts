@@ -1,8 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	OneToOne,
+	JoinColumn,
+	OneToMany,
+	ManyToMany,
+	JoinTable,
+} from 'typeorm';
 
 import { AppBaseEntity } from '../repositories/AppBaseEntity';
 
 import { Location } from './location';
+import { Speaker } from './speaker';
 
 @Entity('event')
 export class Event extends AppBaseEntity {
@@ -26,16 +36,32 @@ export class Event extends AppBaseEntity {
 	})
 	date: Date;
 
-	@OneToOne(type => Location)
-	@JoinColumn()
-	location: Location;
-
 	@Column('varchar', {
 		length: 256,
 		nullable: false,
 	})
 	link: string;
 
-	@Column({ nullable: true })
+	@Column('boolean', {
+		nullable: false,
+	})
+	hasEnded: boolean;
+
+	@Column('varchar', {
+		nullable: true,
+	})
+	bgImage: string;
+
+	@ManyToMany(type => Speaker, {
+		cascade: true,
+	})
+	@JoinTable()
+	speakers: Speaker[];
+
+	@OneToOne(type => Location)
+	@JoinColumn()
+	location: Location;
+
+	@Column('varchar', { nullable: true })
 	locationId: string;
 }

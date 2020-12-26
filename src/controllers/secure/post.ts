@@ -47,11 +47,7 @@ export default {
 		const user = req.user as Account;
 
 		try {
-			const contentMD: string = req.body.content;
-			delete req.body.content;
-
 			const newPost = Post.create(req.body as Partial<Post>);
-			newPost.content_markdown = contentMD;
 
 			await newPost.save();
 
@@ -78,11 +74,6 @@ export default {
 		try {
 			const toUpdate: Partial<Post> = req.body;
 
-			if (req.body.content) {
-				toUpdate.content_markdown = req.body.content;
-
-				delete req.body.content;
-			}
 			const postToUpdate = await Post.findOne(postID);
 
 			if (!postToUpdate)

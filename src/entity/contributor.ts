@@ -1,13 +1,4 @@
-import {
-	Entity,
-	PrimaryGeneratedColumn,
-	Column,
-	BaseEntity,
-	ManyToOne,
-	OneToMany,
-	ManyToMany,
-	JoinTable,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 
 import { AppBaseEntity } from '../repositories/AppBaseEntity';
 
@@ -21,16 +12,24 @@ export class Contributor extends AppBaseEntity {
 	@PrimaryGeneratedColumn('uuid')
 	id: string;
 
-	@Column('varchar')
+	@Column('varchar', {
+		nullable: false,
+	})
 	picture: string;
 
-	@Column('varchar')
+	@Column('varchar', {
+		nullable: false,
+	})
 	username: string;
 
-	@Column('varchar')
+	@Column('varchar', {
+		nullable: false,
+	})
 	description: string;
 
-	@Column('varchar')
+	@Column('varchar', {
+		nullable: true,
+	})
 	job: string;
 
 	@Column({
@@ -46,7 +45,9 @@ export class Contributor extends AppBaseEntity {
 	@JoinTable()
 	languages: Language[];
 
-	@Column('varchar')
+	@Column('varchar', {
+		nullable: true,
+	})
 	city: string;
 
 	@Column('date', {

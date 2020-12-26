@@ -7,7 +7,7 @@ export default {
 	getEvents: async (req: Request, res: Response) => {
 		try {
 			const events = await Event.find({
-				relations: ['location'],
+				relations: ['location', 'speakers'],
 			});
 
 			res.status(200).json({
@@ -27,7 +27,7 @@ export default {
 
 		try {
 			const event = await Event.findOne(eventID, {
-				relations: ['location'],
+				relations: ['location', 'speakers'],
 			});
 
 			return res.status(200).json({

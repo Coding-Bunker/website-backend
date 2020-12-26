@@ -2,12 +2,11 @@ import 'dotenv-safe/config';
 import 'reflect-metadata';
 
 import { Connection } from 'typeorm';
-import scout from '@scout_apm/scout-apm';
 
 import './types';
 
 import restService from './app';
-import logger, { logger as winstonLogger } from './configs/logger';
+import logger from './configs/logger';
 import { createDbConnection } from './db';
 import { promisify } from './utils';
 import * as Admin from './admin';
@@ -35,25 +34,9 @@ const start = async () => {
 	}
 
 	try {
-		await scout.install(
-			{
-				allowShutdown: true,
-				monitor: process.env.SCOUT_MONITOR,
-				key: process.env.SCOUT_KEY,
-				logLevel: process.env.SCOUT_LOG_LEVEL,
-				name: 'Coding Bunker',
-			},
-			{
-				logFn: scout.buildWinstonLogFn(winstonLogger),
-			},
-		);
-	} catch (e) {}
-
-	try {
 		const { admin, router } = Admin.init(connection);
 
 		app = express();
-		app.use(scout.expressMiddleware());
 		app.use(admin.options.rootPath, router);
 		app.use(restService);
 

@@ -9,12 +9,17 @@ export class Location extends AppBaseEntity {
 
 	@Column('varchar', {
 		length: 50,
+		nullable: false,
 	})
 	name: string;
 
-	@Column('double precision')
+	@Column('double precision', {
+		nullable: false,
+	})
 	lat: number;
 
-	@Column('double precision')
+	@Column('double precision', {
+		nullable: false,
+	})
 	long: number;
 }

@@ -59,6 +59,7 @@ const ManyToManyEdit: React.FC<EditPropertyProps> = ({ onChange, property, recor
 
 	const resourceId = property.custom?.resource;
 
+	console.log(property);
 	return (
 		<FormGroup>
 			<Label>{property.label}</Label>

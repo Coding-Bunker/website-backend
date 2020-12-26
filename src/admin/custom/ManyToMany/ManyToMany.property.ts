@@ -6,14 +6,15 @@ import AdminBro, {
 	RecordActionResponse,
 } from 'admin-bro';
 import { unflatten, flatten } from 'flat';
-import { Resource } from '../ResourceManyToMany';
+import { Resource } from '../../ResourceManyToMany';
 
 const setResponseItem = async (
 	{ _admin, resource, record }: ActionContext,
 	response: RecordActionResponse,
 	toResourceId: string,
+	resourceName: string,
 ) => {
-	const toResource = _admin.findResource('Language') as Resource;
+	const toResource = _admin.findResource(resourceName) as Resource;
 	const options = { order: [toResource.titleField()] };
 
 	const throughItems = await (resource as Resource).findRelated(record as BaseRecord, toResourceId);
@@ -46,7 +47,7 @@ const afterHook: (resourceName: string) => After<RecordActionResponse> = (
 		if (request.method === 'get') {
 			await Promise.all(
 				manyProperties.map(async ({ name, res }) => {
-					await setResponseItem(ctx, response, name);
+					await setResponseItem(ctx, response, name, resourceName);
 				}),
 			);
 		}

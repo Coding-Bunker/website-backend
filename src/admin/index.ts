@@ -4,20 +4,24 @@ import * as TypeormAdapter from '@admin-bro/typeorm';
 import { Connection } from 'typeorm';
 
 // Entities
-import { Account } from '../entity/account';
-import { ApiKey } from '../entity/apiKey';
-import { Attachment } from '../entity/attachment';
-import { Contributor } from '../entity/contributor';
-import { Event } from '../entity/event';
-import { Location } from '../entity/location';
-import { Post } from '../entity/post';
-import { Project } from '../entity/project';
-import { Language } from '../entity/language';
+import {
+	Account,
+	ApiKey,
+	Attachment,
+	Contributor,
+	Event,
+	Location,
+	Post,
+	Project,
+	Language,
+	Speaker,
+} from '../entity';
 
 import { createApiKeyAction } from './actions';
 import theme from './theme';
 import { Resource } from './ResourceManyToMany';
-import { makeManyToMany } from './property/ManyToMany.property';
+import { makeManyToMany } from './custom/ManyToMany/ManyToMany.property';
+import * as Workflow from './custom/Workflow';
 
 AdminBro.registerAdapter({ Database: TypeormAdapter.Database, Resource });
 
@@ -27,6 +31,9 @@ const parent = {
 };
 
 const ContributorLanguagesManyToMany = makeManyToMany('Language');
+const EventSpeakersManyToMany = makeManyToMany('Speaker');
+
+AdminBro.bundle('./components/triggerWorkflow.tsx', 'SidebarFooter');
 
 export const init = (connection: Connection) => {
 	const adminPro = new AdminBro({
@@ -114,6 +121,15 @@ export const init = (connection: Connection) => {
 				resource: Event,
 				options: {
 					parent,
+					actions: {
+						...EventSpeakersManyToMany.Actions,
+					},
+					properties: {
+						speakers: EventSpeakersManyToMany.Component,
+						locationId: {
+							isVisible: false,
+						},
+					},
 				},
 			},
 			{
@@ -133,9 +149,6 @@ export const init = (connection: Connection) => {
 					properties: {
 						content: {
 							type: 'textarea',
-							/*components: {
-								edit: AdminBro.bundle('./components/postEdit'),
-							},*/
 						},
 					},
 					parent,
@@ -153,10 +166,20 @@ export const init = (connection: Connection) => {
 					parent,
 				},
 			},
+			{
+				resource: Speaker,
+				options: {
+					parent,
+				},
+			},
 		] as Array<ResourceWithOptions>,
+		dashboard: {
+			handler: Workflow.handler,
+		},
 		branding: {
 			companyName: 'Coding Bunker',
-			softwareBrothers: false,
+			softwareBrothers: true,
+			theme,
 		},
 	});
 

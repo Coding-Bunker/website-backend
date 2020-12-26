@@ -20,17 +20,14 @@ export class Post extends AppBaseEntity {
 
 	@Column('varchar', {
 		length: 100,
+		nullable: false,
 	})
 	title: string;
 
-	@Column('varchar')
+	@Column('varchar', {
+		nullable: false,
+	})
 	content: string;
-
-	@Column('varchar')
-	content_html: string;
-
-	@Column('varchar')
-	content_markdown: string;
 
 	@ManyToOne(type => Account, owner => owner.posts)
 	owner: Account;
